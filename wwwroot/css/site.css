@@ -18,5 +18,33 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #A2B3F3;
 }
+
+/* Layout the sidebar and main content */
+.sidebar {
+    background-color: #425499;
+}
+
+    /* Style the navigation links */
+    .sidebar nav ul {
+        list-style-type: none;
+        padding: 0;
+        color: #A2B3F3;
+    }
+
+        .sidebar nav ul li a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333; /* Adjust color as needed */
+            /* Add more styling for the links */
+        }
+
+            .sidebar nav ul li a:hover {
+                background-color: #ddd; /* Adjust color as needed */
+                /* Add more styling for hover state */
+            }
+
+
