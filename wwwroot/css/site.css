@@ -22,6 +22,11 @@ body {
     background-color: #A2B3F3;
 }
 
+.container {
+    margin-left: 0;
+}
+
+
 /* Layout the sidebar and main content */
 .sidebar {
     height: 100vh;
