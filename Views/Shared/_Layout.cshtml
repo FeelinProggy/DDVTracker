@@ -15,22 +15,25 @@
             <div class="container-fluid">
                 <div class="row container-fluid">
                     <div class="col-2">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navigationPartial" aria-controls="navigationPartial"
                                 aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
+                        <div class="collapse overlay-menu d-md-none" id="navigationPartial">
+                            <partial name="_NavigationPartial" />
+                        </div>
                     </div>
                     <div class="col">
                         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                             <img src="images/Icons/ICODDVTracker.webp" alt="Disney Dreamlight Valley Tracker Icon" />
                         </a>
                     </div>
-                    <div class="col col-md-2">
-                        <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#loginPartial" aria-controls="loginPartial"
+                    <div class="col-1 col-md-2">
+                        <button class="navbar-toggler collapsed d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#loginPartial" aria-controls="loginPartial"
                                 aria-expanded="false" aria-label="Toggle navigation">
-                            <span><i class="bi bi-person-lines-fill"></i></span>
+                            <i class="bi bi-person-lines-fill"></i>
                         </button>
-                        <div class="collapse navbar-collapse d-none d-md-block" id="loginPartial">
+                        <div class="collapse overlay-menu d-md-block" id="loginPartial">
                             <partial name="_LoginPartial" />
                         </div>
                     </div>
@@ -44,27 +47,10 @@
             <div class="col-2 sidebar d-none d-md-block">
                 <!-- Sidebar navigation -->
                 <nav>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/About">My Valley</a></li>
-                        <li>
-                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#collections-collapse" aria-expanded="false">
-                             Collections
-                            </button>
-                            <div class="collapse" id="collections-collapse">
-                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Characters</a></li>
-                                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Critters</a></li>
-                                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Fish</a></li>
-                                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Ingredients</a></li>
-                                    <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Recipes</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+                    <partial name="_NavigationPartial" />
                 </nav>
             </div>
-            <main role="main" class="col-md-10 py-3">
+            <main role="main" class="col py-3">
                 @RenderBody()
             </main>
         </div>

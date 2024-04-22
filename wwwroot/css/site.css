@@ -51,5 +51,8 @@ body {
                 background-color: #ddd;
                 color: black;
             }
-
-
+            .overlay-menu {
+    position: fixed; /* Sit on top of the page content */
+    z-index: 1000; /* Ensure it's above other content */
+    background-color: white; /* Or any color you want */
+}
