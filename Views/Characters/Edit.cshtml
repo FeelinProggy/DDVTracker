@@ -1,0 +1,69 @@
+﻿@model DDVTracker.Models.Character
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Character</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CharacterId" />
+            <div class="form-group">
+                <label asp-for="GameVersionId" class="control-label"></label>
+                <select asp-for="GameVersionId" class="form-control" asp-items="ViewBag.GameVersionId"></select>
+                <span asp-validation-for="GameVersionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CharacterName" class="control-label"></label>
+                <input asp-for="CharacterName" class="form-control" />
+                <span asp-validation-for="CharacterName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="isUnlocked" class="control-label"></label>
+                <input asp-for="isUnlocked" class="form-control" />
+                <span asp-validation-for="isUnlocked" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CharacterLevel" class="control-label"></label>
+                <input asp-for="CharacterLevel" class="form-control" />
+                <span asp-validation-for="CharacterLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedSkill" class="control-label"></label>
+                <input asp-for="AssignedSkill" class="form-control" />
+                <span asp-validation-for="AssignedSkill" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FavoriteThing1" class="control-label"></label>
+                <input asp-for="FavoriteThing1" class="form-control" />
+                <span asp-validation-for="FavoriteThing1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FavoriteThing2" class="control-label"></label>
+                <input asp-for="FavoriteThing2" class="form-control" />
+                <span asp-validation-for="FavoriteThing2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FavoriteThing3" class="control-label"></label>
+                <input asp-for="FavoriteThing3" class="form-control" />
+                <span asp-validation-for="FavoriteThing3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
