@@ -16,6 +16,11 @@ namespace DDVTracker.Models
         public int GameVersionId { get; set; }
 
         /// <summary>
+        /// Navigation property for the GameVersion
+        /// </summary>
+        public GameVersion GameVersion { get; set; }
+
+        /// <summary>
         /// The name of the character
         /// </summary>
         [Required]
