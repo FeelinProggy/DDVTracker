@@ -10,6 +10,5 @@ namespace DDVTracker.Data
         {
         }
 
-        DbSet<Character>
     }
 }
