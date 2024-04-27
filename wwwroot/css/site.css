@@ -51,8 +51,31 @@ body {
                 background-color: #ddd;
                 color: black;
             }
-            .overlay-menu {
+
+.overlay-menu {
     position: fixed; /* Sit on top of the page content */
     z-index: 1000; /* Ensure it's above other content */
     background-color: white; /* Or any color you want */
 }
+
+/*Homepage */
+.grid {
+    display: grid;
+    width: 440px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.tile {
+    background-color: #ddd;
+    width: 140px;
+    align-content:center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+    .tile:hover {
+        background-color: #ccc;
+        box-shadow: inset -3px -3px 7px rgba(255, 255, 255, 0.05), inset 3px 3px 5px rgba(0, 0, 0, 0.15);
+    }
