@@ -1,0 +1,66 @@
+﻿@model DDVTracker.Models.Character
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Character</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GameVersion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GameVersion.GameVersionName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CharacterName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CharacterName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.isUnlocked)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.isUnlocked)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CharacterLevel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CharacterLevel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AssignedSkill)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AssignedSkill)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FavoriteThing1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FavoriteThing1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FavoriteThing2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FavoriteThing2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FavoriteThing3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FavoriteThing3)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.CharacterId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
