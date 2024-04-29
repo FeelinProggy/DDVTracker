@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GameVersion)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CharacterName)
             </th>
             <th>
@@ -24,27 +21,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.CharacterLevel)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AssignedSkill)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FavoriteThing1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FavoriteThing2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FavoriteThing3)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CharacterName)
             </td>
@@ -53,18 +34,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CharacterLevel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssignedSkill)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FavoriteThing1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FavoriteThing2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FavoriteThing3)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CharacterId">Edit</a> |
