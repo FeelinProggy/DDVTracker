@@ -41,6 +41,7 @@ namespace DDVTracker.Models
         /// <summary>
         /// For user to track Character's level
         /// </summary>
+        [Range(1, 10)]
         public int? CharacterLevel { get; set; }
 
         /// <summary>
