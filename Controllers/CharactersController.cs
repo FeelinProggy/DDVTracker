@@ -26,25 +26,6 @@ namespace DDVTracker.Controllers
             return View(await dreamlightDbContext.ToListAsync());
         }
 
-        // GET: Characters/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var character = await _context.Characters
-                .Include(c => c.GameVersion)
-                .FirstOrDefaultAsync(m => m.CharacterId == id);
-            if (character == null)
-            {
-                return NotFound();
-            }
-
-            return View(character);
-        }
-
         // GET: Characters/Create
         public IActionResult Create()
         {
@@ -55,19 +36,35 @@ namespace DDVTracker.Controllers
         // POST: Characters/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// For admins to create new character objects to display. 
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="CharacterImage">Will check if an image has been selected and then convert it
+        /// to be stored in the database as varbinary</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel,AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character)
+        public async Task<IActionResult> Create([Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
+        "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                _context.Add(character);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (CharacterImage != null) { 
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await CharacterImage.CopyToAsync(memoryStream);
+                            character.CharacterImage = memoryStream.ToArray();
+                        }
+                }
+                    _context.Add(character);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", character.GameVersionId);
+                return View(character);
             }
-            ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", character.GameVersionId);
-            return View(character);
-        }
 
         // GET: Characters/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -91,7 +88,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel,AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character)
+        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel,AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile image)
         {
             if (id != character.CharacterId)
             {
@@ -102,6 +99,12 @@ namespace DDVTracker.Controllers
             {
                 try
                 {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await image.CopyToAsync(memoryStream);
+                        character.CharacterImage = memoryStream.ToArray();
+                    }
+
                     _context.Update(character);
                     await _context.SaveChangesAsync();
                 }
@@ -159,6 +162,25 @@ namespace DDVTracker.Controllers
         private bool CharacterExists(int id)
         {
             return _context.Characters.Any(e => e.CharacterId == id);
+        }
+
+        // GET: Characters/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var character = await _context.Characters
+                .Include(c => c.GameVersion)
+                .FirstOrDefaultAsync(m => m.CharacterId == id);
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            return View(character);
         }
     }
 }
