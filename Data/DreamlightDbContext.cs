@@ -1,7 +1,6 @@
 ﻿using DDVTracker.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.PortableExecutable;
 
 namespace DDVTracker.Data
 {
@@ -28,6 +27,12 @@ namespace DDVTracker.Data
                 new Character { CharacterId = 1, GameVersionId = 1, CharacterName = "Mickey Mouse", CharacterLevel = 1 },
                 new Character { CharacterId = 2, GameVersionId = 2, CharacterName = "Rapunzel", CharacterLevel = 5 }
             );
+
+            // Set up the foreign key relationship. One Theme to many characters
+            modelBuilder.Entity<Character>().HasOne(c => c.GameVersion).WithMany(gv => gv.Characters).HasForeignKey(c => c.GameVersionId);
+
         }
+
+
     }
 }
