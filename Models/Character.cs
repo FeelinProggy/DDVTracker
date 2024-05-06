@@ -62,7 +62,7 @@ namespace DDVTracker.Models
         /// Used to convert bit back into and image to be displayed
         /// </summary>
         [NotMapped] // This attribute means the property will not be mapped to a database column
-        public string ImageBase64
+        public string? ImageBase64
         {
             get
             {

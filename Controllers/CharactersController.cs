@@ -48,7 +48,6 @@ namespace DDVTracker.Controllers
         public async Task<IActionResult> Create([Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
         "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
         {
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 if (CharacterImage != null) { 
@@ -88,38 +87,33 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel,AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile image)
+        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
+            "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
         {
             if (id != character.CharacterId)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
-                try
+                var existingCharacter = await _context.Characters.AsNoTracking().FirstOrDefaultAsync(c => c.CharacterId == id);
+                if (CharacterImage != null && CharacterImage.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        await image.CopyToAsync(memoryStream);
+                        await CharacterImage.CopyToAsync(memoryStream);
                         character.CharacterImage = memoryStream.ToArray();
                     }
-
+                }
+                else
+                {
+                    character.CharacterImage = existingCharacter.CharacterImage;
+                }
+            
                     _context.Update(character);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CharacterExists(character.CharacterId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", character.GameVersionId);
             return View(character);
