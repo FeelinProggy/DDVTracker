@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    [Migration("20240429144825_Initial")]
+    [Migration("20240506001029_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -35,6 +35,9 @@ namespace DDVTracker.Data.Migrations
 
                     b.Property<string>("AssignedSkill")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("CharacterImage")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("CharacterLevel")
                         .HasColumnType("int");

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 namespace DDVTracker.Models
 {
     public class Character
@@ -26,12 +27,12 @@ namespace DDVTracker.Models
         [Required]
         public string CharacterName { get; set; }
 
-        /* WILL BE IMPLEMENTED LATER
         /// <summary>
         /// to save the character's image
         /// </summary>
-        public byte[] CharacterImage { get; set; }
-        */
+        [DisplayName("Image")]
+        public byte[]? CharacterImage { get; set; }
+        
 
         /// <summary>
         /// For user to note whether they have unlocked the character
