@@ -8,5 +8,10 @@ namespace DDVTracker.Models
 
         [Required]
         public string GameVersionName { get; set; }
+
+        /// <summary>
+        /// Navigation property for Characters.
+        /// </summary>
+        public ICollection<Character> Characters { get; set; }
     }
 }
