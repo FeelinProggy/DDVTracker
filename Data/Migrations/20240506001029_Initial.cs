@@ -179,6 +179,7 @@ namespace DDVTracker.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GameVersionId = table.Column<int>(type: "int", nullable: false),
                     CharacterName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CharacterImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     isUnlocked = table.Column<bool>(type: "bit", nullable: true),
                     CharacterLevel = table.Column<int>(type: "int", nullable: true),
                     AssignedSkill = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -208,11 +209,11 @@ namespace DDVTracker.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Characters",
-                columns: new[] { "CharacterId", "AssignedSkill", "CharacterLevel", "CharacterName", "FavoriteThing1", "FavoriteThing2", "FavoriteThing3", "GameVersionId", "isUnlocked" },
+                columns: new[] { "CharacterId", "AssignedSkill", "CharacterImage", "CharacterLevel", "CharacterName", "FavoriteThing1", "FavoriteThing2", "FavoriteThing3", "GameVersionId", "isUnlocked" },
                 values: new object[,]
                 {
-                    { 1, null, 1, "Mickey Mouse", null, null, null, 1, null },
-                    { 2, null, 5, "Rapunzel", null, null, null, 2, null }
+                    { 1, null, null, 1, "Mickey Mouse", null, null, null, 1, null },
+                    { 2, null, null, 5, "Rapunzel", null, null, null, 2, null }
                 });
 
             migrationBuilder.CreateIndex(

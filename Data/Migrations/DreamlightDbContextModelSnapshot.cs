@@ -33,6 +33,9 @@ namespace DDVTracker.Data.Migrations
                     b.Property<string>("AssignedSkill")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("CharacterImage")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int?>("CharacterLevel")
                         .HasColumnType("int");
 

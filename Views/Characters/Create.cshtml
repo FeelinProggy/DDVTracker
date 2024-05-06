@@ -10,11 +10,11 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="GameVersionId" class="control-label"></label>
-                <select asp-for="GameVersionId" class ="form-control" asp-items="ViewBag.GameVersionId"></select>
+                <select asp-for="GameVersionId" class="form-control" asp-items="ViewBag.GameVersionId as SelectList"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CharacterName" class="control-label"></label>
@@ -22,34 +22,8 @@
                 <span asp-validation-for="CharacterName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="isUnlocked" class="control-label"></label>
-                <input asp-for="isUnlocked" class="form-control" />
-                <span asp-validation-for="isUnlocked" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CharacterLevel" class="control-label"></label>
-                <input asp-for="CharacterLevel" class="form-control" />
-                <span asp-validation-for="CharacterLevel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssignedSkill" class="control-label"></label>
-                <input asp-for="AssignedSkill" class="form-control" />
-                <span asp-validation-for="AssignedSkill" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FavoriteThing1" class="control-label"></label>
-                <input asp-for="FavoriteThing1" class="form-control" />
-                <span asp-validation-for="FavoriteThing1" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FavoriteThing2" class="control-label"></label>
-                <input asp-for="FavoriteThing2" class="form-control" />
-                <span asp-validation-for="FavoriteThing2" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FavoriteThing3" class="control-label"></label>
-                <input asp-for="FavoriteThing3" class="form-control" />
-                <span asp-validation-for="FavoriteThing3" class="text-danger"></span>
+                <label asp-for="CharacterImage" class="control-label"></label>
+                <input type="file" asp-for="CharacterImage" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

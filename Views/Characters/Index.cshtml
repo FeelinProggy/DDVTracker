@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -12,6 +13,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CharacterImage)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CharacterName)
             </th>
@@ -25,7 +29,17 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageBase64))
+                    {
+                        <img src="data:image/jpeg;base64,@item.ImageBase64" alt="Character Image" width="100" />
+                    }
+                    else
+                    {
+                        <p>No image available</p>
+                    }
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CharacterName)
             </td>

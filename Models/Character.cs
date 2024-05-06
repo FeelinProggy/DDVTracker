@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace DDVTracker.Models
 {
     public class Character
@@ -10,15 +12,14 @@ namespace DDVTracker.Models
         public int CharacterId { get; set; }
 
         /// <summary>
-        /// The version of the game the character is included in
+        /// Foreign key for version of the game the character is included in
         /// </summary>
-        [Required]
         public int GameVersionId { get; set; }
 
         /// <summary>
         /// Navigation property for the GameVersion
         /// </summary>
-        public GameVersion GameVersion { get; set; }
+        public GameVersion? GameVersion { get; set; }
 
         /// <summary>
         /// The name of the character
@@ -26,12 +27,12 @@ namespace DDVTracker.Models
         [Required]
         public string CharacterName { get; set; }
 
-        /* WILL BE IMPLEMENTED LATER
         /// <summary>
         /// to save the character's image
         /// </summary>
-        public byte[] CharacterImage { get; set; }
-        */
+        [DisplayName("Image")]
+        public byte[]? CharacterImage { get; set; }
+        
 
         /// <summary>
         /// For user to note whether they have unlocked the character
@@ -56,6 +57,18 @@ namespace DDVTracker.Models
         public string? FavoriteThing1 { get; set; }
         public string? FavoriteThing2 { get; set; }
         public string? FavoriteThing3 { get; set; }
+
+        /// <summary>
+        /// Used to convert bit back into and image to be displayed
+        /// </summary>
+        [NotMapped] // This attribute means the property will not be mapped to a database column
+        public string? ImageBase64
+        {
+            get
+            {
+                return CharacterImage != null ? Convert.ToBase64String(CharacterImage) : null;
+            }
+        }
 
     }
 }
