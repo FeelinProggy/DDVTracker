@@ -36,5 +36,23 @@ namespace DDVTracker.Models
                 }
             }
         }
+
+        public static async Task CreateDefaultUser(IServiceProvider provider, string role)
+        {
+            var userManager = provider.GetRequiredService<UserManager<IdentityUser>>();
+
+            // If there are no users in the role, create a default user
+            if ((await userManager.GetUsersInRoleAsync(role)).Count == 0)
+            {
+                IdentityUser defaultUser = new IdentityUser
+                {
+                    UserName = "master",
+                    Email = "master@ddv.com"
+                };
+
+                await userManager.CreateAsync(defaultUser, "P@ssword1");
+                await userManager.AddToRoleAsync(defaultUser, role);
+            }
+        }
     }
 }

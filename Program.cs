@@ -11,7 +11,7 @@ builder.Services.AddDbContext<DreamlightDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DreamlightDbContext>();
 builder.Services.AddControllersWithViews();
@@ -67,6 +67,9 @@ app.MapRazorPages();
 IServiceScope serviceProvider = app.Services.GetRequiredService<IServiceProvider>().CreateScope();
 // Create roles
 await IdentityHelper.CreateRoles(serviceProvider.ServiceProvider, IdentityHelper.Master, IdentityHelper.Admin, IdentityHelper.Moderator, IdentityHelper.User);
+
+// Create default user
+await IdentityHelper.CreateDefaultUser(serviceProvider.ServiceProvider, IdentityHelper.Master);
 
 
 app.Run();
