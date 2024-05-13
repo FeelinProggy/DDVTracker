@@ -30,13 +30,18 @@
                             <p>No image available</p>
                         }
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.CharacterName)</h5>
+                        <h6 class="card-title">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
 
-
-                        <p class="card-text">@Html.DisplayFor(modelItem => item.isUnlocked)</p>
-                        <p class="card-text">@Html.DisplayFor(modelItem => item.CharacterLevel)</p>
-                        <a asp-action="Edit" asp-route-id="@item.CharacterId" class="btn btn-primary">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.CharacterId" class="btn btn-primary">Details</a>
                         @{
+                            if (User.IsInRole(IdentityHelper.User))
+                            {
+                                <a asp-action="Details" asp-route-id="@item.CharacterId" class="btn btn-primary">Details</a>
+                            }
+                            if (User.IsInRole(IdentityHelper.User) || User.IsInRole(IdentityHelper.Master)
+                                || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.CharacterId" class="btn btn-primary">Edit</a>
+                            }
                             if (User.IsInRole(IdentityHelper.Master) || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
                             {
                                 <p>
