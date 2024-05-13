@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DDVTracker.Data;
 using DDVTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DDVTracker.Controllers
 {
@@ -27,6 +28,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Characters/Create
+        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
         public IActionResult Create()
         {
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName");
@@ -66,6 +68,7 @@ namespace DDVTracker.Controllers
             }
 
         // GET: Characters/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -120,6 +123,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Characters/Delete/5
+        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
