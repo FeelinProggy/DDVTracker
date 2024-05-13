@@ -5,56 +5,53 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CharacterImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CharacterName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.isUnlocked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CharacterLevel)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-            <tr>
-                <td>
-                    @if (!string.IsNullOrEmpty(item.ImageBase64))
-                    {
-                        <img src="data:image/jpeg;base64,@item.ImageBase64" alt="Character Image" width="100" />
-                    }
-                    else
-                    {
-                        <p>No image available</p>
-                    }
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CharacterName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.isUnlocked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CharacterLevel)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CharacterId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CharacterId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CharacterId">Delete</a>
-            </td>
-        </tr>
+<h1>Characters</h1>
+@{
+    if (User.IsInRole(IdentityHelper.Master) || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-success">Create New</a>
+        </p>
+    }
 }
-    </tbody>
-</table>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(item.ImageBase64))
+                        {
+                            <img src="data:image/jpeg;base64,@item.ImageBase64" alt="Character Image" class="img-fluid" />
+                        }
+                        else
+                        {
+                            <p>No image available</p>
+                        }
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.CharacterName)</h5>
+                        <h6 class="card-title">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
+
+                        @{
+                            if (User.IsInRole(IdentityHelper.User))
+                            {
+                                <a asp-action="Details" asp-route-id="@item.CharacterId" class="btn btn-primary">Details</a>
+                            }
+                            if (User.IsInRole(IdentityHelper.User) || User.IsInRole(IdentityHelper.Master)
+                                || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.CharacterId" class="btn btn-primary">Edit</a>
+                            }
+                            if (User.IsInRole(IdentityHelper.Master) || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+                            {
+                                <p>
+                                    <a asp-action="Delete" asp-route-id="@item.CharacterId" class="btn btn-danger">Delete</a>
+                                </p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
