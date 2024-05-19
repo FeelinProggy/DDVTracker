@@ -26,7 +26,7 @@ namespace DDVTracker.Models.Collections
         [DisplayName("Image")]
         public byte[]? FishImage { get; set; }
 
-        public List<string> FishLocations { get; set; }
+        public List<string>? FishLocations { get; set; }
 
         public string RippleColor { get; set; }
 

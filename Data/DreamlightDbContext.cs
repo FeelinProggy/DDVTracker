@@ -1,4 +1,5 @@
 ﻿using DDVTracker.Models;
+using DDVTracker.Models.Collections;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,11 @@ namespace DDVTracker.Data
             modelBuilder.Entity<Character>().HasData(
                 new Character { CharacterId = 1, GameVersionId = 1, CharacterName = "Mickey Mouse", CharacterLevel = 1 },
                 new Character { CharacterId = 2, GameVersionId = 2, CharacterName = "Rapunzel", CharacterLevel = 5 }
+            );
+
+            modelBuilder.Entity<Fish>().HasData(
+                new Fish { FishId = 1, GameVersionId = 1, FishName = "Bass", RippleColor = "white" },
+                new Fish { FishId = 2, GameVersionId = 2, FishName = "Robot Fish", RippleColor = "blue" }
             );
 
             // Set up the foreign key relationship. One Theme to many characters
