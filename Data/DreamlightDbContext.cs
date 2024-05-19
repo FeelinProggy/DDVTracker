@@ -1,5 +1,4 @@
 ﻿using DDVTracker.Models;
-using DDVTracker.Models.Collections;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +42,7 @@ namespace DDVTracker.Data
             modelBuilder.Entity<Character>().HasOne(c => c.GameVersion).WithMany(gv => gv.Characters).HasForeignKey(c => c.GameVersionId);
 
         }
+        public DbSet<DDVTracker.Models.Fish> Fish { get; set; } = default!;
 
 
     }

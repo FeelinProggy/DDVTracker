@@ -35,18 +35,16 @@ namespace DDVTracker.Controllers
             return View();
         }
 
-        // POST: Characters/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Fish/Create
         /// <summary>
         /// For admins to create new character objects to display. 
         /// </summary>
         /// <param name="character"></param>
         /// <param name="CharacterImage">Will check if an image has been selected and then convert it
         /// to be stored in the database as varbinary</param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
         public async Task<IActionResult> Create([Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
         "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
         {
@@ -90,6 +88,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
             "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
         {

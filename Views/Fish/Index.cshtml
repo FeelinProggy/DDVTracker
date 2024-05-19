@@ -1,0 +1,59 @@
+﻿@model IEnumerable<DDVTracker.Models.Fish>
+
+@{
+    ViewData["Title"] = "Fish";
+}
+
+<h1>Fish</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GameVersion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FishName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FishImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FishLocations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RippleColor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FishName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FishImage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FishLocations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RippleColor)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FishId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FishId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FishId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
