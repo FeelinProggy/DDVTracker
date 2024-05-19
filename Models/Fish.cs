@@ -1,5 +1,4 @@
-﻿/*
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,7 +26,9 @@ namespace DDVTracker.Models.Collections
         [DisplayName("Image")]
         public byte[]? FishImage { get; set; }
 
-        public string
+        public List<string> FishLocations { get; set; }
+
+        public string RippleColor { get; set; }
 
         /// <summary>
         /// Used to convert bit back into and image to be displayed
@@ -37,9 +38,8 @@ namespace DDVTracker.Models.Collections
         {
             get
             {
-                return CharacterImage != null ? Convert.ToBase64String(CharacterImage) : null;
+                return FishImage != null ? Convert.ToBase64String(FishImage) : null;
             }
         }
     }
 }
-*/
