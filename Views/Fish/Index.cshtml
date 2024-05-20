@@ -9,12 +9,15 @@
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
+
+
+
 <div class="container">
     <div class="row">
         @foreach (var item in Model)
         {
             <div class="col-md-2">
-                <div class="card">
+                <div class="card" style="border-color: @item.RippleColor;">
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(item.ImageBase64))
                         {
@@ -26,7 +29,7 @@
                         }
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.FishName)</h5>
                         <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
-                        <h7 class="card-body">@Html.DisplayFor(modelItem => item.FishLocations)</h7>
+                        	<p>@string.Join(", ", item.FishLocations.Select(fl => fl.Location.LocationName))</p>
 
                         @{
                             if (User.IsInRole(IdentityHelper.User))

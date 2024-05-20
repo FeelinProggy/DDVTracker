@@ -24,6 +24,7 @@ namespace DDVTracker.Controllers
         public async Task<IActionResult> Index()
         {
             var dreamlightDbContext = _context.Fish.Include(f => f.GameVersion);
+            var fish = _context.Fish.Include(f => f.FishLocations).ThenInclude(fl => fl.Location).ToList();
             return View(await dreamlightDbContext.ToListAsync());
         }
 
