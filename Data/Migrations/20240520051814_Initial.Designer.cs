@@ -4,6 +4,7 @@ using DDVTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    partial class DreamlightDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240520051814_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,19 +162,19 @@ namespace DDVTracker.Data.Migrations
                         {
                             FishLocationId = 2,
                             FishId = 1,
-                            LocationId = 2
+                            LocationId = 1
                         },
                         new
                         {
                             FishLocationId = 3,
                             FishId = 1,
-                            LocationId = 3
+                            LocationId = 1
                         },
                         new
                         {
                             FishLocationId = 4,
                             FishId = 1,
-                            LocationId = 4
+                            LocationId = 1
                         },
                         new
                         {

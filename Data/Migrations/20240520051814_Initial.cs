@@ -198,6 +198,74 @@ namespace DDVTracker.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Fish",
+                columns: table => new
+                {
+                    FishId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameVersionId = table.Column<int>(type: "int", nullable: false),
+                    FishName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FishImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    RippleColor = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fish", x => x.FishId);
+                    table.ForeignKey(
+                        name: "FK_Fish_GameVersion_GameVersionId",
+                        column: x => x.GameVersionId,
+                        principalTable: "GameVersion",
+                        principalColumn: "GameVersionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    LocationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameVersionId = table.Column<int>(type: "int", nullable: false),
+                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.LocationId);
+                    table.ForeignKey(
+                        name: "FK_Locations_GameVersion_GameVersionId",
+                        column: x => x.GameVersionId,
+                        principalTable: "GameVersion",
+                        principalColumn: "GameVersionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FishLocations",
+                columns: table => new
+                {
+                    FishLocationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FishId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FishLocations", x => x.FishLocationId);
+                    table.ForeignKey(
+                        name: "FK_FishLocations_Fish_FishId",
+                        column: x => x.FishId,
+                        principalTable: "Fish",
+                        principalColumn: "FishId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FishLocations_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "GameVersion",
                 columns: new[] { "GameVersionId", "GameVersionName" },
@@ -214,6 +282,42 @@ namespace DDVTracker.Data.Migrations
                 {
                     { 1, null, null, 1, "Mickey Mouse", null, null, null, 1, null },
                     { 2, null, null, 5, "Rapunzel", null, null, null, 2, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Fish",
+                columns: new[] { "FishId", "FishImage", "FishName", "GameVersionId", "RippleColor" },
+                values: new object[,]
+                {
+                    { 1, null, "Bass", 1, "white" },
+                    { 2, null, "Robot Fish", 2, "blue" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "LocationId", "GameVersionId", "LocationName" },
+                values: new object[,]
+                {
+                    { 1, 1, "Plaza" },
+                    { 2, 1, "Peaceful Meadow" },
+                    { 3, 1, "Forest of Valor" },
+                    { 4, 1, "Sunlit Plateau" },
+                    { 5, 2, "The Oasis" },
+                    { 6, 2, "The Grasslands" },
+                    { 7, 2, "The Promenade" },
+                    { 8, 2, "The Docks" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "FishLocations",
+                columns: new[] { "FishLocationId", "FishId", "LocationId" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 1, 1 },
+                    { 3, 1, 1 },
+                    { 4, 1, 1 },
+                    { 5, 2, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -259,6 +363,26 @@ namespace DDVTracker.Data.Migrations
                 name: "IX_Characters_GameVersionId",
                 table: "Characters",
                 column: "GameVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fish_GameVersionId",
+                table: "Fish",
+                column: "GameVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FishLocations_FishId",
+                table: "FishLocations",
+                column: "FishId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FishLocations_LocationId",
+                table: "FishLocations",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_GameVersionId",
+                table: "Locations",
+                column: "GameVersionId");
         }
 
         /// <inheritdoc />
@@ -283,10 +407,19 @@ namespace DDVTracker.Data.Migrations
                 name: "Characters");
 
             migrationBuilder.DropTable(
+                name: "FishLocations");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Fish");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "GameVersion");
