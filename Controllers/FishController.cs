@@ -77,10 +77,22 @@ namespace DDVTracker.Controllers
             }
 
             var fish = await _context.Fish.FindAsync(id);
+
             if (fish == null)
             {
                 return NotFound();
             }
+
+            var allLocations = _context.Locations.ToList();
+            var fishLocations = _context.FishLocations.Where(fl => fl.FishId == fish.FishId).Select(fl => fl.LocationId).ToList();
+
+            ViewBag.Locations = allLocations.Select(l => new SelectListItem
+            {
+                Value = l.LocationId.ToString(),
+                Text = l.LocationName,
+                Selected = fishLocations.Contains(l.LocationId)
+            }).ToList();
+
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
             return View(fish);
         }
