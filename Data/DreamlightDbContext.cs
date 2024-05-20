@@ -56,9 +56,9 @@ namespace DDVTracker.Data
 
             modelBuilder.Entity<FishLocation>().HasData(
                 new FishLocation { FishLocationId = 1, FishId = 1, LocationId = 1 },
-                new FishLocation { FishLocationId = 2, FishId = 1, LocationId = 1 },
-                new FishLocation { FishLocationId = 3, FishId = 1, LocationId = 1 },
-                new FishLocation { FishLocationId = 4, FishId = 1, LocationId = 1 },
+                new FishLocation { FishLocationId = 2, FishId = 1, LocationId = 2 },
+                new FishLocation { FishLocationId = 3, FishId = 1, LocationId = 3 },
+                new FishLocation { FishLocationId = 4, FishId = 1, LocationId = 4 },
                 new FishLocation { FishLocationId = 5, FishId = 2, LocationId = 2 }
             );
 
@@ -69,12 +69,13 @@ namespace DDVTracker.Data
                 .HasOne(fl => fl.Fish)
                 .WithMany(f => f.FishLocations)
                 .HasForeignKey(fl => fl.FishId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
+
             modelBuilder.Entity<FishLocation>()
                 .HasOne(fl => fl.Location)
                 .WithMany(l => l.FishLocations)
                 .HasForeignKey(fl => fl.LocationId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
 
         }
 

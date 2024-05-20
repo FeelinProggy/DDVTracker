@@ -24,12 +24,12 @@ namespace DDVTracker.Models
         [DisplayName("Image")]
         public byte[]? FishImage { get; set; }
 
-        // Navigation property for the FishLocation
-        public List<FishLocation>? FishLocations { get; set; }
-        public int FishLocationId { get; set; }
 
-        
         public string RippleColor { get; set; }
+
+
+        // Navigation property for the FishLocation
+        public ICollection<FishLocation> FishLocations { get; set; }
 
         /// <summary>
         /// Used to convert bit back into and image to be displayed

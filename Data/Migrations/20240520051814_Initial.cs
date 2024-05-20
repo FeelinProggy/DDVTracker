@@ -207,7 +207,6 @@ namespace DDVTracker.Data.Migrations
                     GameVersionId = table.Column<int>(type: "int", nullable: false),
                     FishName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FishImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    FishLocationId = table.Column<int>(type: "int", nullable: false),
                     RippleColor = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -264,7 +263,7 @@ namespace DDVTracker.Data.Migrations
                         column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "LocationId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -287,11 +286,11 @@ namespace DDVTracker.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Fish",
-                columns: new[] { "FishId", "FishImage", "FishLocationId", "FishName", "GameVersionId", "RippleColor" },
+                columns: new[] { "FishId", "FishImage", "FishName", "GameVersionId", "RippleColor" },
                 values: new object[,]
                 {
-                    { 1, null, 0, "Bass", 1, "white" },
-                    { 2, null, 0, "Robot Fish", 2, "blue" }
+                    { 1, null, "Bass", 1, "white" },
+                    { 2, null, "Robot Fish", 2, "blue" }
                 });
 
             migrationBuilder.InsertData(

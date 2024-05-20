@@ -4,10 +4,6 @@ namespace DDVTracker.Models
 {
     public class Location
     {
-        public Location()
-        {
-            FishLocations = new List<FishLocation>();
-        }
         /// <summary>
         /// The Character's Id number
         /// </summary>
@@ -27,7 +23,7 @@ namespace DDVTracker.Models
         public string LocationName { get; set; }
 
         // Navigation property for the FishLocation
-        public List<FishLocation>? FishLocations { get; set; }
+        public ICollection<FishLocation> FishLocations { get; set; }
 
     }
 }

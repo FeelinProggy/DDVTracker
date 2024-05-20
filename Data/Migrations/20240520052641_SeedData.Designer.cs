@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    [Migration("20240520035954_Initial")]
-    partial class Initial
+    [Migration("20240520052641_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,9 +95,6 @@ namespace DDVTracker.Data.Migrations
                     b.Property<byte[]>("FishImage")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("FishLocationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FishName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -119,7 +116,6 @@ namespace DDVTracker.Data.Migrations
                         new
                         {
                             FishId = 1,
-                            FishLocationId = 0,
                             FishName = "Bass",
                             GameVersionId = 1,
                             RippleColor = "white"
@@ -127,7 +123,6 @@ namespace DDVTracker.Data.Migrations
                         new
                         {
                             FishId = 2,
-                            FishLocationId = 0,
                             FishName = "Robot Fish",
                             GameVersionId = 2,
                             RippleColor = "blue"
@@ -167,19 +162,19 @@ namespace DDVTracker.Data.Migrations
                         {
                             FishLocationId = 2,
                             FishId = 1,
-                            LocationId = 1
+                            LocationId = 2
                         },
                         new
                         {
                             FishLocationId = 3,
                             FishId = 1,
-                            LocationId = 1
+                            LocationId = 3
                         },
                         new
                         {
                             FishLocationId = 4,
                             FishId = 1,
-                            LocationId = 1
+                            LocationId = 4
                         },
                         new
                         {
@@ -525,7 +520,7 @@ namespace DDVTracker.Data.Migrations
                     b.HasOne("DDVTracker.Models.Location", "Location")
                         .WithMany("FishLocations")
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Fish");
@@ -536,7 +531,7 @@ namespace DDVTracker.Data.Migrations
             modelBuilder.Entity("DDVTracker.Models.Location", b =>
                 {
                     b.HasOne("DDVTracker.Models.GameVersion", "GameVersion")
-                        .WithMany()
+                        .WithMany("Locations")
                         .HasForeignKey("GameVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -605,6 +600,8 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("Characters");
 
                     b.Navigation("Fish");
+
+                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("DDVTracker.Models.Location", b =>

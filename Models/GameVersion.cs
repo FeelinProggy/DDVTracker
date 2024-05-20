@@ -15,5 +15,6 @@ namespace DDVTracker.Models
         /// </summary>
         public ICollection<Character>? Characters { get; set; }
         public ICollection<Fish>? Fish { get; set; }
+        public ICollection<Location>? Locations { get; set; }
     }
 }
