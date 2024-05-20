@@ -9,51 +9,45 @@
 <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.GameVersion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FishName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FishImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FishLocations)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RippleColor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FishName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FishImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FishLocations)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RippleColor)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FishId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FishId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FishId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(item.ImageBase64))
+                        {
+                            <img src="data:image/jpeg;base64,@item.ImageBase64" alt="Fish Image" class="img-fluid" />
+                        }
+                        else
+                        {
+                            <p>No image available</p>
+                        }
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.FishName)</h5>
+                        <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
+                        <h7 class="card-body">@Html.DisplayFor(modelItem => item.FishLocations)</h7>
+
+                        @{
+                            if (User.IsInRole(IdentityHelper.User))
+                            {
+                                <a asp-action="Details" asp-route-id="@item.FishId" class="btn btn-primary">Details</a>
+                            }
+                            if (User.IsInRole(IdentityHelper.User) || User.IsInRole(IdentityHelper.Master)
+                            || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.FishId" class="btn btn-primary">Edit</a>
+                            }
+                            if (User.IsInRole(IdentityHelper.Master) || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+                            {
+                                <p>
+                                    <a asp-action="Delete" asp-route-id="@item.FishId" class="btn btn-danger">Delete</a>
+                                </p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

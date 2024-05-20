@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace DDVTracker.Models
 {
     public class Fish
@@ -9,14 +10,11 @@ namespace DDVTracker.Models
         public int FishId { get; set; }
 
         /// <summary>
-        /// Foreign key for version of the game the character is included in
-        /// </summary>
-        public int GameVersionId { get; set; }
-
-        /// <summary>
+        /// Foreign key for GameVersionId of the game the character is included in
         /// Navigation property for the GameVersion
         /// </summary>
         public GameVersion? GameVersion { get; set; }
+        public int GameVersionId { get; set; }
 
         public string FishName { get; set; }
 
@@ -26,8 +24,11 @@ namespace DDVTracker.Models
         [DisplayName("Image")]
         public byte[]? FishImage { get; set; }
 
-        public List<string>? FishLocations { get; set; }
+        // Navigation property for the FishLocation
+        public List<FishLocation>? FishLocations { get; set; }
+        public int FishLocationId { get; set; }
 
+        
         public string RippleColor { get; set; }
 
         /// <summary>

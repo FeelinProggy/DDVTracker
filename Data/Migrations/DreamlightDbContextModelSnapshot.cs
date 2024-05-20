@@ -81,7 +81,7 @@ namespace DDVTracker.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DDVTracker.Models.Collections.Fish", b =>
+            modelBuilder.Entity("DDVTracker.Models.Fish", b =>
                 {
                     b.Property<int>("FishId")
                         .ValueGeneratedOnAdd()
@@ -92,8 +92,8 @@ namespace DDVTracker.Data.Migrations
                     b.Property<byte[]>("FishImage")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("FishLocations")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FishLocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FishName")
                         .IsRequired()
@@ -116,6 +116,7 @@ namespace DDVTracker.Data.Migrations
                         new
                         {
                             FishId = 1,
+                            FishLocationId = 0,
                             FishName = "Bass",
                             GameVersionId = 1,
                             RippleColor = "white"
@@ -123,9 +124,65 @@ namespace DDVTracker.Data.Migrations
                         new
                         {
                             FishId = 2,
+                            FishLocationId = 0,
                             FishName = "Robot Fish",
                             GameVersionId = 2,
                             RippleColor = "blue"
+                        });
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.FishLocation", b =>
+                {
+                    b.Property<int>("FishLocationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FishLocationId"));
+
+                    b.Property<int>("FishId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FishLocationId");
+
+                    b.HasIndex("FishId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("FishLocations");
+
+                    b.HasData(
+                        new
+                        {
+                            FishLocationId = 1,
+                            FishId = 1,
+                            LocationId = 1
+                        },
+                        new
+                        {
+                            FishLocationId = 2,
+                            FishId = 1,
+                            LocationId = 1
+                        },
+                        new
+                        {
+                            FishLocationId = 3,
+                            FishId = 1,
+                            LocationId = 1
+                        },
+                        new
+                        {
+                            FishLocationId = 4,
+                            FishId = 1,
+                            LocationId = 1
+                        },
+                        new
+                        {
+                            FishLocationId = 5,
+                            FishId = 2,
+                            LocationId = 2
                         });
                 });
 
@@ -177,7 +234,7 @@ namespace DDVTracker.Data.Migrations
 
                     b.HasIndex("GameVersionId");
 
-                    b.ToTable("Location");
+                    b.ToTable("Locations");
 
                     b.HasData(
                         new
@@ -189,6 +246,42 @@ namespace DDVTracker.Data.Migrations
                         new
                         {
                             LocationId = 2,
+                            GameVersionId = 1,
+                            LocationName = "Peaceful Meadow"
+                        },
+                        new
+                        {
+                            LocationId = 3,
+                            GameVersionId = 1,
+                            LocationName = "Forest of Valor"
+                        },
+                        new
+                        {
+                            LocationId = 4,
+                            GameVersionId = 1,
+                            LocationName = "Sunlit Plateau"
+                        },
+                        new
+                        {
+                            LocationId = 5,
+                            GameVersionId = 2,
+                            LocationName = "The Oasis"
+                        },
+                        new
+                        {
+                            LocationId = 6,
+                            GameVersionId = 2,
+                            LocationName = "The Grasslands"
+                        },
+                        new
+                        {
+                            LocationId = 7,
+                            GameVersionId = 2,
+                            LocationName = "The Promenade"
+                        },
+                        new
+                        {
+                            LocationId = 8,
                             GameVersionId = 2,
                             LocationName = "The Docks"
                         });
@@ -407,15 +500,34 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("GameVersion");
                 });
 
-            modelBuilder.Entity("DDVTracker.Models.Collections.Fish", b =>
+            modelBuilder.Entity("DDVTracker.Models.Fish", b =>
                 {
                     b.HasOne("DDVTracker.Models.GameVersion", "GameVersion")
-                        .WithMany()
+                        .WithMany("Fish")
                         .HasForeignKey("GameVersionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("GameVersion");
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.FishLocation", b =>
+                {
+                    b.HasOne("DDVTracker.Models.Fish", "Fish")
+                        .WithMany("FishLocations")
+                        .HasForeignKey("FishId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DDVTracker.Models.Location", "Location")
+                        .WithMany("FishLocations")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fish");
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("DDVTracker.Models.Location", b =>
@@ -480,9 +592,21 @@ namespace DDVTracker.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DDVTracker.Models.Fish", b =>
+                {
+                    b.Navigation("FishLocations");
+                });
+
             modelBuilder.Entity("DDVTracker.Models.GameVersion", b =>
                 {
                     b.Navigation("Characters");
+
+                    b.Navigation("Fish");
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.Location", b =>
+                {
+                    b.Navigation("FishLocations");
                 });
 #pragma warning restore 612, 618
         }
