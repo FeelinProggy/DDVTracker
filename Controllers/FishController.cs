@@ -30,6 +30,7 @@ namespace DDVTracker.Controllers
 
 
         // GET: Fish/Create
+        [HttpGet]
         [Authorize(Policy = "RequireModeratorRole")]
         public IActionResult Create()
         {
@@ -67,8 +68,18 @@ namespace DDVTracker.Controllers
                         fish.FishImage = memoryStream.ToArray();
                     }
                 }
+
+                // Save the Fish object first to generate a FishId
                 _context.Add(fish);
                 await _context.SaveChangesAsync();
+
+                // Then create FishLocation objects for each selected location
+                if (fish.SelectedLocationIds != null)
+                {
+                    fish.FishLocations = fish.SelectedLocationIds.Select(id => new FishLocation { FishId = fish.FishId, LocationId = id }).ToList();
+                    _context.AddRange(fish.FishLocations);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
