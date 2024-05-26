@@ -1,14 +1,22 @@
 ﻿@model IEnumerable<DDVTracker.Models.Fish>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Fish";
 }
 
 <h1>Fish</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
-</p>
+@{
+    // Only show the create button if the user is signed in and is not a regular user
+    if (SignInManager.IsSignedIn(User) && !User.IsInRole(IdentityHelper.User))
+    {
+        <p>
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+        </p>
+    }
+}
 
 
 
@@ -29,23 +37,15 @@
                         }
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.FishName)</h5>
                         <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
-                        	<p>@string.Join(", ", item.FishLocations.Select(fl => fl.Location.LocationName))</p>
+                        <p>@string.Join(", ", item.FishLocations.Select(fl => fl.Location.LocationName))</p>
+                        <a asp-action="Details" asp-route-id="@item.FishId" class="btn btn-primary">Details</a>
 
                         @{
-                            if (User.IsInRole(IdentityHelper.User))
-                            {
-                                <a asp-action="Details" asp-route-id="@item.FishId" class="btn btn-primary">Details</a>
-                            }
-                            if (User.IsInRole(IdentityHelper.User) || User.IsInRole(IdentityHelper.Master)
-                            || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
+                            // Only show the edit and delete buttons if the user is signed in and is not a regular user
+                            if (SignInManager.IsSignedIn(User) && !User.IsInRole(IdentityHelper.User))
                             {
                                 <a asp-action="Edit" asp-route-id="@item.FishId" class="btn btn-primary">Edit</a>
-                            }
-                            if (User.IsInRole(IdentityHelper.Master) || User.IsInRole(IdentityHelper.Admin) || User.IsInRole(IdentityHelper.Moderator))
-                            {
-                                <p>
-                                    <a asp-action="Delete" asp-route-id="@item.FishId" class="btn btn-danger">Delete</a>
-                                </p>
+                                <a asp-action="Delete" asp-route-id="@item.FishId" class="btn btn-danger">Delete</a>
                             }
                         }
                     </div>
