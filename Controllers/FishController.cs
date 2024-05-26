@@ -33,6 +33,14 @@ namespace DDVTracker.Controllers
         [Authorize(Policy = "RequireModeratorRole")]
         public IActionResult Create()
         {
+            var allLocations = _context.Locations.ToList();
+
+            ViewBag.Locations = allLocations.Select(l => new SelectListItem
+            {
+                Value = l.LocationId.ToString(),
+                Text = l.LocationName
+            }).ToList();
+
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName");
             return View();
         }
@@ -47,7 +55,7 @@ namespace DDVTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RequireModeratorRole")]
-        public async Task<IActionResult> Create([Bind("FishId,GameVersionId,FishName,FishLocations,RippleColor")] Fish fish, IFormFile? FishImage)
+        public async Task<IActionResult> Create([Bind("FishId,GameVersionId,FishName,SelectedLocationIds,RippleColor")] Fish fish, IFormFile? FishImage)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +111,7 @@ namespace DDVTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RequireModeratorRole")]
-        public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,FishImage,FishLocations,RippleColor")] Fish fish)
+        public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,FishLocations,RippleColor")] Fish fish, IFormFile? FishImage)
         {
             if (id != fish.FishId)
             {
@@ -112,23 +120,22 @@ namespace DDVTracker.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var existingFish = await _context.Fish.AsNoTracking().FirstOrDefaultAsync(c => c.FishId == id);
+                if (FishImage != null && FishImage.Length > 0)
                 {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await FishImage.CopyToAsync(memoryStream);
+                        fish.FishImage = memoryStream.ToArray();
+                    }
+                }
+                else
+                {
+                    fish.FishImage = existingFish.FishImage;
+                }
                     _context.Update(fish);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FishExists(fish.FishId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
             return View(fish);

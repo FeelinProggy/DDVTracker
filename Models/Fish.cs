@@ -42,5 +42,8 @@ namespace DDVTracker.Models
                 return FishImage != null ? Convert.ToBase64String(FishImage) : null;
             }
         }
+
+        [NotMapped]
+        public List<int> SelectedLocationIds { get; set; }
     }
 }
