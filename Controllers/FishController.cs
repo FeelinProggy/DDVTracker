@@ -30,7 +30,7 @@ namespace DDVTracker.Controllers
 
 
         // GET: Fish/Create
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public IActionResult Create()
         {
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName");
@@ -46,7 +46,7 @@ namespace DDVTracker.Controllers
         /// to be stored in the database as varbinary</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Create([Bind("FishId,GameVersionId,FishName,FishLocations,RippleColor")] Fish fish, IFormFile? FishImage)
         {
             if (ModelState.IsValid)
@@ -68,7 +68,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Fish/Edit/5
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -102,7 +102,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,FishImage,FishLocations,RippleColor")] Fish fish)
         {
             if (id != fish.FishId)
@@ -135,6 +135,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Fish/Delete/5
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -156,6 +157,7 @@ namespace DDVTracker.Controllers
         // POST: Fish/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var fish = await _context.Fish.FindAsync(id);
