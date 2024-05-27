@@ -24,7 +24,7 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="card" style="border-color: @item.RippleColor;">
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(item.ImageBase64))
@@ -37,7 +37,12 @@
                         }
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.FishName)</h5>
                         <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
-                        <p>@string.Join(", ", item.FishLocations.Select(fl => fl.Location.LocationName))</p>
+                        <ul>
+                            @foreach (var fishLocation in item.FishLocations)
+                            {
+                                <li>@fishLocation.Location.LocationName</li>
+                            }
+                        </ul>
                         <a asp-action="Details" asp-route-id="@item.FishId" class="btn btn-primary">Details</a>
 
                         @{

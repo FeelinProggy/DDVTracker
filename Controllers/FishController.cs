@@ -192,6 +192,7 @@ namespace DDVTracker.Controllers
 
             var fish = await _context.Fish
                 .Include(f => f.GameVersion)
+                .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
             if (fish == null)
             {
@@ -207,10 +208,16 @@ namespace DDVTracker.Controllers
         [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fish = await _context.Fish.FindAsync(id);
+            var fish = await _context.Fish.Include(f => f.FishLocations).FirstOrDefaultAsync(f => f.FishId == id);
             if (fish != null)
             {
+                // Remove associated FishLocation objects
+                _context.FishLocations.RemoveRange(fish.FishLocations);
+
+                // Remove the Fish object
                 _context.Fish.Remove(fish);
+
+                await _context.SaveChangesAsync();
             }
 
             await _context.SaveChangesAsync();
@@ -227,6 +234,7 @@ namespace DDVTracker.Controllers
 
             var fish = await _context.Fish
                 .Include(f => f.GameVersion)
+                .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
             if (fish == null)
             {
