@@ -169,7 +169,7 @@ namespace DDVTracker.Controllers
                 foreach (var locationId in locationIdsToRemove)
                 {
                     var fishLocation = existingFish.FishLocations.Single(fl => fl.LocationId == locationId);
-                    existingFish.FishLocations.Remove(fishLocation);
+                    _context.FishLocations.Remove(fishLocation);
                 }
 
                 _context.Update(existingFish);
