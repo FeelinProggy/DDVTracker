@@ -16,6 +16,10 @@ This site will function as a paired down wiki and collection tracker for the gam
 ## Roles
 - New registered users will be added to the User role, promotions to other levels are a work in progress.
 - All users will be able to view general information, but registered users will be able to mark off collected items and update progress they wish to track.
+- Elevated users can create/edit objects
+  
+### Images
+ - Sample images are located in the wwwroot folder id you'd like to test creating/editing objects
   
 ### General user
 ![Screenshot 2024-05-13 071242](https://github.com/FeelinProggy/DDVTracker/assets/147089624/7936e97a-42a1-477b-839d-1e731d442d7e)  
@@ -25,9 +29,6 @@ This site will function as a paired down wiki and collection tracker for the gam
 
 ### Elevated user
 ![Screenshot 2024-05-13 071308](https://github.com/FeelinProggy/DDVTracker/assets/147089624/325895b8-b217-40d5-ade8-ac1116d37968)
-
-
-
 
 Images below are from the game's collections tab. 
 ![in game collections tab](https://github.com/FeelinProggy/DDVTracker/assets/147089624/58ceea4f-fc72-4a7c-9c86-127bb81d50ad)
