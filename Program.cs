@@ -14,6 +14,14 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DreamlightDbContext>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdministratorRole",
+               policy => policy.RequireRole(IdentityHelper.Master, IdentityHelper.Admin));
+    options.AddPolicy("RequireModeratorRole",
+               policy => policy.RequireRole(IdentityHelper.Master, IdentityHelper.Admin, IdentityHelper.Moderator));
+});
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<IdentityOptions>(options =>

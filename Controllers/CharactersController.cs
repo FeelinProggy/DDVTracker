@@ -28,7 +28,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Characters/Create
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public IActionResult Create()
         {
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName");
@@ -44,7 +44,7 @@ namespace DDVTracker.Controllers
         /// to be stored in the database as varbinary</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Create([Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
         "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
         {
@@ -122,7 +122,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Characters/Delete/5
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,6 +144,7 @@ namespace DDVTracker.Controllers
         // POST: Characters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var character = await _context.Characters.FindAsync(id);

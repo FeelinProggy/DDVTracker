@@ -7,9 +7,9 @@ namespace DDVTracker.Models
         [Key]
         public int FishLocationId { get; set; }
         public int FishId { get; set; }
-        public Fish Fish { get; set; } 
+        public Fish? Fish { get; set; } 
 
         public int LocationId { get; set; }
-        public Location Location { get; set; }
+        public Location? Location { get; set; }
     }
 }

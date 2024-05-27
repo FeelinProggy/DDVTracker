@@ -1,7 +1,7 @@
 ﻿@model DDVTracker.Models.Fish
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Fish - Create";
 }
 
 <h1>Create</h1>
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="GameVersionId" class="control-label"></label>
@@ -23,17 +23,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="FishImage" class="control-label"></label>
-                <input asp-for="FishImage" class="form-control" />
-                <span asp-validation-for="FishImage" class="text-danger"></span>
+                <input type="file" asp-for="FishImage" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="FishLocations" class="control-label"></label>
-                <input asp-for="FishLocations" class="form-control" />
-                <span asp-validation-for="FishLocations" class="text-danger"></span>
+                <label asp-for="SelectedLocationIds" class="control-label"></label>
+                <select asp-for="SelectedLocationIds" asp-items="ViewBag.Locations" class="form-control" multiple></select>
+                <span asp-validation-for="SelectedLocationIds" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RippleColor" class="control-label"></label>
-                <input asp-for="RippleColor" class="form-control" />
+                <select asp-for="RippleColor" class="form-control">
+                    <option value="White">White</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Orange">Orange</option>
+                </select>
                 <span asp-validation-for="RippleColor" class="text-danger"></span>
             </div>
             <div class="form-group">

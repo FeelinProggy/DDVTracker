@@ -7,14 +7,15 @@ namespace DDVTracker.Models
 {
     public class Fish
     {
+        [Key]
         public int FishId { get; set; }
 
         /// <summary>
         /// Foreign key for GameVersionId of the game the character is included in
         /// Navigation property for the GameVersion
         /// </summary>
-        public GameVersion? GameVersion { get; set; }
         public int GameVersionId { get; set; }
+        public GameVersion? GameVersion { get; set; }
 
         public string FishName { get; set; }
 
@@ -29,7 +30,7 @@ namespace DDVTracker.Models
 
 
         // Navigation property for the FishLocation
-        public ICollection<FishLocation> FishLocations { get; set; }
+        public ICollection<FishLocation>? FishLocations { get; set; }
 
         /// <summary>
         /// Used to convert bit back into and image to be displayed
@@ -42,5 +43,11 @@ namespace DDVTracker.Models
                 return FishImage != null ? Convert.ToBase64String(FishImage) : null;
             }
         }
+
+        /// <summary>
+        /// Used to store the selected location ids from the form to create FishLocation objects
+        /// </summary>
+        [NotMapped]
+        public List<int>? SelectedLocationIds { get; set; }
     }
 }

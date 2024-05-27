@@ -30,9 +30,18 @@ namespace DDVTracker.Controllers
 
 
         // GET: Fish/Create
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [HttpGet]
+        [Authorize(Policy = "RequireModeratorRole")]
         public IActionResult Create()
         {
+            var allLocations = _context.Locations.ToList();
+
+            ViewBag.Locations = allLocations.Select(l => new SelectListItem
+            {
+                Value = l.LocationId.ToString(),
+                Text = l.LocationName
+            }).ToList();
+
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName");
             return View();
         }
@@ -46,8 +55,8 @@ namespace DDVTracker.Controllers
         /// to be stored in the database as varbinary</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
-        public async Task<IActionResult> Create([Bind("FishId,GameVersionId,FishName,FishLocations,RippleColor")] Fish fish, IFormFile? FishImage)
+        [Authorize(Policy = "RequireModeratorRole")]
+        public async Task<IActionResult> Create([Bind("FishId,GameVersionId,FishName,SelectedLocationIds,RippleColor")] Fish fish, IFormFile? FishImage)
         {
             if (ModelState.IsValid)
             {
@@ -59,8 +68,18 @@ namespace DDVTracker.Controllers
                         fish.FishImage = memoryStream.ToArray();
                     }
                 }
+
+                // Save the Fish object first to generate a FishId
                 _context.Add(fish);
                 await _context.SaveChangesAsync();
+
+                // Then create FishLocation objects for each selected location
+                if (fish.SelectedLocationIds != null)
+                {
+                    fish.FishLocations = fish.SelectedLocationIds.Select(id => new FishLocation { FishId = fish.FishId, LocationId = id }).ToList();
+                    _context.AddRange(fish.FishLocations);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
@@ -68,7 +87,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Fish/Edit/5
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,10 +96,22 @@ namespace DDVTracker.Controllers
             }
 
             var fish = await _context.Fish.FindAsync(id);
+
             if (fish == null)
             {
                 return NotFound();
             }
+
+            var allLocations = _context.Locations.ToList();
+            var fishLocations = _context.FishLocations.Where(fl => fl.FishId == fish.FishId).Select(fl => fl.LocationId).ToList();
+
+            ViewBag.Locations = allLocations.Select(l => new SelectListItem
+            {
+                Value = l.LocationId.ToString(),
+                Text = l.LocationName,
+                Selected = fishLocations.Contains(l.LocationId)
+            }).ToList();
+
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
             return View(fish);
         }
@@ -90,8 +121,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = IdentityHelper.Master + "," + IdentityHelper.Admin + "," + IdentityHelper.Moderator)]
-        public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,FishImage,FishLocations,RippleColor")] Fish fish)
+        public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,SelectedLocationIds,RippleColor")] Fish fish, IFormFile? FishImage)
         {
             if (id != fish.FishId)
             {
@@ -100,22 +130,51 @@ namespace DDVTracker.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var existingFish = await _context.Fish.Include(f => f.FishLocations).SingleAsync(f => f.FishId == id);
+                if (FishImage != null && FishImage.Length > 0)
                 {
-                    _context.Update(fish);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FishExists(fish.FishId))
+                    using (var memoryStream = new MemoryStream())
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        await FishImage.CopyToAsync(memoryStream);
+                        existingFish.FishImage = memoryStream.ToArray(); // Update existingFish.FishImage
                     }
                 }
+                else
+                {
+                    fish.FishImage = existingFish.FishImage;
+                }
+                // Update the properties of the existing Fish object
+                existingFish.GameVersionId = fish.GameVersionId;
+                existingFish.FishName = fish.FishName;
+                existingFish.RippleColor = fish.RippleColor;
+
+                // Get the current list of Location IDs
+                var currentLocationIds = existingFish.FishLocations.Select(fl => fl.LocationId).ToList();
+
+                // Get the list of new Location IDs
+                var newLocationIds = fish.SelectedLocationIds ?? new List<int>();
+
+                // Find the Location IDs to add and remove
+                var locationIdsToAdd = newLocationIds.Except(currentLocationIds).ToList();
+                var locationIdsToRemove = currentLocationIds.Except(newLocationIds).ToList();
+
+                // Add new FishLocation objects
+                foreach (var locationId in locationIdsToAdd)
+                {
+                    var fishLocation = new FishLocation { FishId = existingFish.FishId, LocationId = locationId };
+                    existingFish.FishLocations.Add(fishLocation);
+                }
+
+                // Remove FishLocation objects
+                foreach (var locationId in locationIdsToRemove)
+                {
+                    var fishLocation = existingFish.FishLocations.Single(fl => fl.LocationId == locationId);
+                    _context.FishLocations.Remove(fishLocation);
+                }
+
+                _context.Update(existingFish);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
@@ -123,6 +182,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Fish/Delete/5
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,6 +192,7 @@ namespace DDVTracker.Controllers
 
             var fish = await _context.Fish
                 .Include(f => f.GameVersion)
+                .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
             if (fish == null)
             {
@@ -144,12 +205,19 @@ namespace DDVTracker.Controllers
         // POST: Fish/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fish = await _context.Fish.FindAsync(id);
+            var fish = await _context.Fish.Include(f => f.FishLocations).FirstOrDefaultAsync(f => f.FishId == id);
             if (fish != null)
             {
+                // Remove associated FishLocation objects
+                _context.FishLocations.RemoveRange(fish.FishLocations);
+
+                // Remove the Fish object
                 _context.Fish.Remove(fish);
+
+                await _context.SaveChangesAsync();
             }
 
             await _context.SaveChangesAsync();
@@ -166,6 +234,7 @@ namespace DDVTracker.Controllers
 
             var fish = await _context.Fish
                 .Include(f => f.GameVersion)
+                .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
             if (fish == null)
             {
