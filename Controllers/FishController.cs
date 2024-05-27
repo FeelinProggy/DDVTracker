@@ -121,8 +121,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Policy = "RequireModeratorRole")]
-        public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,FishLocations,RippleColor")] Fish fish, IFormFile? FishImage)
+        public async Task<IActionResult> Edit(int id, [Bind("FishId,GameVersionId,FishName,SelectedLocationIds,RippleColor")] Fish fish, IFormFile? FishImage)
         {
             if (id != fish.FishId)
             {
@@ -131,22 +130,52 @@ namespace DDVTracker.Controllers
 
             if (ModelState.IsValid)
             {
-                var existingFish = await _context.Fish.AsNoTracking().FirstOrDefaultAsync(c => c.FishId == id);
+                var existingFish = await _context.Fish.Include(f => f.FishLocations).SingleAsync(f => f.FishId == id);
                 if (FishImage != null && FishImage.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
                         await FishImage.CopyToAsync(memoryStream);
-                        fish.FishImage = memoryStream.ToArray();
+                        existingFish.FishImage = memoryStream.ToArray(); // Update existingFish.FishImage
                     }
                 }
                 else
                 {
                     fish.FishImage = existingFish.FishImage;
                 }
-                    _context.Update(fish);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                // Update the properties of the existing Fish object
+                existingFish.GameVersionId = fish.GameVersionId;
+                existingFish.FishName = fish.FishName;
+                existingFish.RippleColor = fish.RippleColor;
+
+                // Get the current list of Location IDs
+                var currentLocationIds = existingFish.FishLocations.Select(fl => fl.LocationId).ToList();
+
+                // Get the list of new Location IDs
+                var newLocationIds = fish.SelectedLocationIds ?? new List<int>();
+
+                // Find the Location IDs to add and remove
+                var locationIdsToAdd = newLocationIds.Except(currentLocationIds).ToList();
+                var locationIdsToRemove = currentLocationIds.Except(newLocationIds).ToList();
+
+                // Add new FishLocation objects
+                foreach (var locationId in locationIdsToAdd)
+                {
+                    var fishLocation = new FishLocation { FishId = existingFish.FishId, LocationId = locationId };
+                    existingFish.FishLocations.Add(fishLocation);
+                }
+
+                // Remove FishLocation objects
+                foreach (var locationId in locationIdsToRemove)
+                {
+                    var fishLocation = existingFish.FishLocations.Single(fl => fl.LocationId == locationId);
+                    existingFish.FishLocations.Remove(fishLocation);
+                }
+
+                _context.Update(existingFish);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", fish.GameVersionId);
             return View(fish);
