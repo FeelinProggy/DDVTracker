@@ -26,8 +26,8 @@ This site will function as a paired down wiki and collection tracker for the gam
 ### Elevated user
 ![Screenshot 2024-05-13 071308](https://github.com/FeelinProggy/DDVTracker/assets/147089624/325895b8-b217-40d5-ade8-ac1116d37968)
 
-
-
+### Images
+ - Sample images are located in the wwwroot folder id you'd like to test creating/editing objects
 
 Images below are from the game's collections tab. 
 ![in game collections tab](https://github.com/FeelinProggy/DDVTracker/assets/147089624/58ceea4f-fc72-4a7c-9c86-127bb81d50ad)
