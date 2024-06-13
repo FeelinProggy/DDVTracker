@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    [Migration("20240613060348_AddIngredients")]
-    partial class AddIngredients
+    [Migration("20240613072104_DbInitial")]
+    partial class DbInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
