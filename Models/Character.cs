@@ -27,6 +27,13 @@ namespace DDVTracker.Models
         [Required]
         public string CharacterName { get; set; }
 
+        public string? AcquiredBy { get; set; }
+
+        public string? AcquiredFrom { get; set; }
+
+        public string? Notes { get; set; }
+
+
         /// <summary>
         /// to save the character's image
         /// </summary>

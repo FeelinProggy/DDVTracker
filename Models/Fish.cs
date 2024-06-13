@@ -26,7 +26,23 @@ namespace DDVTracker.Models
         public byte[]? FishImage { get; set; }
 
 
-        public string RippleColor { get; set; }
+        public string? RippleColor { get; set; }
+
+        /// <summary>
+        /// Price to buy from stall
+        /// </summary>
+        public int? SellsFor { get; set; }
+
+        /// <summary>
+        /// Energy gained from eating
+        /// </summary>
+        public int? Energy { get; set; }
+
+        /// <summary>
+        /// Addiiotnal info for the fish
+        /// i.e. times or weather conditions
+        /// </summary>
+        public string? Notes { get; set; }
 
 
         // Navigation property for the FishLocation

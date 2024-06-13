@@ -22,6 +22,8 @@ namespace DDVTracker.Models
 
         public string LocationName { get; set; }
 
+        public string? Cost { get; set; }
+
         // Navigation property for the FishLocation
         public ICollection<FishLocation> FishLocations { get; set; }
 
