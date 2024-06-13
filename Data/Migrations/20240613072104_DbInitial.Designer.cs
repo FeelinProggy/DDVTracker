@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    [Migration("20240613042156_DbInitial")]
+    [Migration("20240613072104_DbInitial")]
     partial class DbInitial
     {
         /// <inheritdoc />
@@ -1397,6 +1397,1052 @@ namespace DDVTracker.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DDVTracker.Models.Ingredient", b =>
+                {
+                    b.Property<int>("IngredientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IngredientId"));
+
+                    b.Property<int?>("BuyPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Energy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GrowTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IngredientCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IngredientName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Method")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SellsFor")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Water")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Yield")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientId");
+
+                    b.HasIndex("GameVersionId");
+
+                    b.ToTable("Ingredient");
+
+                    b.HasData(
+                        new
+                        {
+                            IngredientId = 1,
+                            BuyPrice = 50,
+                            Energy = 300,
+                            GameVersionId = 1,
+                            GrowTime = "20 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Apple",
+                            LocationId = 1,
+                            Method = "Gardening",
+                            SellsFor = 25,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 2,
+                            BuyPrice = 200,
+                            Energy = 42,
+                            GameVersionId = 1,
+                            GrowTime = "2 h 15 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Asparagus",
+                            LocationId = 7,
+                            Method = "Gardening",
+                            SellsFor = 133,
+                            Water = 2,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 3,
+                            BuyPrice = 58,
+                            Energy = 350,
+                            GameVersionId = 1,
+                            GrowTime = "23 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Banana",
+                            LocationId = 3,
+                            Method = "Gardening",
+                            SellsFor = 29,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 4,
+                            Energy = 100,
+                            GameVersionId = 1,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Basil",
+                            LocationId = 2,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 5,
+                            BuyPrice = 50,
+                            Energy = 79,
+                            GameVersionId = 1,
+                            GrowTime = "15 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Bell Pepper",
+                            LocationId = 4,
+                            Method = "Gardening",
+                            SellsFor = 33,
+                            Water = 1,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 6,
+                            BuyPrice = 58,
+                            Energy = 350,
+                            GameVersionId = 1,
+                            GrowTime = "23 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Blueberry",
+                            LocationId = 4,
+                            Method = "Gardening",
+                            SellsFor = 29,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 7,
+                            BuyPrice = 190,
+                            Energy = 285,
+                            GameVersionId = 1,
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Butter",
+                            LocationId = 32,
+                            Method = "Purchase",
+                            Notes = "After A Restaurant Makeover",
+                            SellsFor = 190
+                        },
+                        new
+                        {
+                            IngredientId = 8,
+                            BuyPrice = 164,
+                            Energy = 59,
+                            GameVersionId = 1,
+                            GrowTime = "35 m",
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Canola",
+                            LocationId = 4,
+                            Method = "Gardening",
+                            SellsFor = 109,
+                            Water = 3,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 9,
+                            BuyPrice = 66,
+                            Energy = 57,
+                            GameVersionId = 1,
+                            GrowTime = "15 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Carrot",
+                            LocationId = 2,
+                            Method = "Gardening",
+                            SellsFor = 44,
+                            Water = 1,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 10,
+                            BuyPrice = 180,
+                            Energy = 270,
+                            GameVersionId = 1,
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Cheese",
+                            LocationId = 32,
+                            Method = "Purchase",
+                            Notes = "After A Restaurant Makeover",
+                            SellsFor = 180
+                        },
+                        new
+                        {
+                            IngredientId = 11,
+                            BuyPrice = 83,
+                            Energy = 500,
+                            GameVersionId = 1,
+                            GrowTime = "33 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Cherry",
+                            LocationId = 7,
+                            Method = "Gardening",
+                            SellsFor = 42,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 12,
+                            BuyPrice = 117,
+                            Energy = 140,
+                            GameVersionId = 1,
+                            GrowTime = "45 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Chili Pepper",
+                            LocationId = 6,
+                            Method = "Gardening",
+                            SellsFor = 78,
+                            Water = 1,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 13,
+                            Energy = 120,
+                            GameVersionId = 1,
+                            IngredientCategory = "Seafood",
+                            IngredientName = "Clam",
+                            LocationId = 3,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 14,
+                            BuyPrice = 75,
+                            Energy = 450,
+                            GameVersionId = 1,
+                            GrowTime = "30 m",
+                            IngredientCategory = "Sweetener",
+                            IngredientName = "Cocoa Bean",
+                            LocationId = 5,
+                            Method = "Gardening",
+                            SellsFor = 38,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 15,
+                            Energy = 500,
+                            GameVersionId = 1,
+                            GrowTime = "23 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Coconut",
+                            LocationId = 3,
+                            Method = "Foraging",
+                            Notes = "After Burying the Eel",
+                            SellsFor = 42,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 16,
+                            Energy = 425,
+                            GameVersionId = 1,
+                            GrowTime = "40 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Coffee Bean",
+                            LocationId = 5,
+                            Method = "Foraging",
+                            Notes = "After Very Sleepy Stitch",
+                            SellsFor = 36,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 17,
+                            BuyPrice = 24,
+                            Energy = 30,
+                            GameVersionId = 1,
+                            GrowTime = "12 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Corn",
+                            LocationId = 3,
+                            Method = "Gardening",
+                            SellsFor = 16,
+                            Water = 1,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 18,
+                            BuyPrice = 239,
+                            Energy = 145,
+                            GameVersionId = 1,
+                            GrowTime = "1 h 15 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Cucumber",
+                            LocationId = 7,
+                            Method = "Gardening",
+                            SellsFor = 159,
+                            Water = 1,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 19,
+                            Energy = 500,
+                            GameVersionId = 1,
+                            GrowTime = "1 d",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Dreamlight Fruit",
+                            LocationId = 6,
+                            Method = "Foraging",
+                            Notes = "After The Dreamlight Grove",
+                            SellsFor = 40,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 20,
+                            BuyPrice = 220,
+                            Energy = 330,
+                            GameVersionId = 1,
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Egg",
+                            LocationId = 32,
+                            Method = "Purchase",
+                            Notes = "After A Restaurant Makeover",
+                            SellsFor = 220
+                        },
+                        new
+                        {
+                            IngredientId = 21,
+                            BuyPrice = 462,
+                            Energy = 451,
+                            GameVersionId = 1,
+                            GrowTime = "3 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Eggplant",
+                            LocationId = 7,
+                            Method = "Gardening",
+                            SellsFor = 308,
+                            Water = 2,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 22,
+                            Energy = 135,
+                            GameVersionId = 1,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Garlic",
+                            LocationId = 4,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 23,
+                            Energy = 175,
+                            GameVersionId = 1,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Ginger",
+                            LocationId = 8,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 24,
+                            BuyPrice = 100,
+                            Energy = 600,
+                            GameVersionId = 1,
+                            GrowTime = "40 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Gooseberry",
+                            LocationId = 7,
+                            Method = "Gardening",
+                            SellsFor = 50,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 25,
+                            BuyPrice = 464,
+                            Energy = 228,
+                            GameVersionId = 1,
+                            GrowTime = "2 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Leek",
+                            LocationId = 8,
+                            Method = "Gardening",
+                            SellsFor = 309,
+                            Water = 2,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 26,
+                            BuyPrice = 67,
+                            Energy = 400,
+                            GameVersionId = 1,
+                            GrowTime = "27 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Lemon",
+                            LocationId = 5,
+                            Method = "Gardening",
+                            SellsFor = 33,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 27,
+                            BuyPrice = 12,
+                            Energy = 56,
+                            GameVersionId = 1,
+                            GrowTime = "3 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Lettuce",
+                            LocationId = 2,
+                            Method = "Gardening",
+                            SellsFor = 8,
+                            Water = 1,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 28,
+                            BuyPrice = 230,
+                            Energy = 345,
+                            GameVersionId = 1,
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Milk",
+                            LocationId = 32,
+                            Method = "Purchase",
+                            Notes = "After A Restaurant Makeover",
+                            SellsFor = 230
+                        },
+                        new
+                        {
+                            IngredientId = 29,
+                            Energy = 155,
+                            GameVersionId = 1,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Mint",
+                            LocationId = 7,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 30,
+                            Energy = 105,
+                            GameVersionId = 1,
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Mushroom",
+                            LocationId = 5,
+                            Method = "Foraging",
+                            SellsFor = 30
+                        },
+                        new
+                        {
+                            IngredientId = 31,
+                            BuyPrice = 171,
+                            Energy = 31,
+                            GameVersionId = 1,
+                            GrowTime = "2 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Okra",
+                            LocationId = 5,
+                            Method = "Gardening",
+                            SellsFor = 114,
+                            Water = 1,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 32,
+                            BuyPrice = 255,
+                            Energy = 146,
+                            GameVersionId = 1,
+                            GrowTime = "1 h 15 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Onion",
+                            LocationId = 4,
+                            Method = "Gardening",
+                            SellsFor = 170,
+                            Water = 2,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 33,
+                            Energy = 95,
+                            GameVersionId = 1,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Oregano",
+                            LocationId = 1,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 34,
+                            Energy = 250,
+                            GameVersionId = 1,
+                            IngredientCategory = "Seafood",
+                            IngredientName = "Oyster",
+                            LocationId = 3,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 35,
+                            BuyPrice = 200,
+                            Energy = 300,
+                            GameVersionId = 1,
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Peanut",
+                            LocationId = 32,
+                            Method = "Purchase",
+                            Notes = "After Remy's Recipe Book",
+                            SellsFor = 200
+                        },
+                        new
+                        {
+                            IngredientId = 36,
+                            BuyPrice = 189,
+                            Energy = 113,
+                            GameVersionId = 1,
+                            GrowTime = "35 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Potato",
+                            LocationId = 8,
+                            Method = "Gardening",
+                            SellsFor = 126,
+                            Water = 3,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 37,
+                            BuyPrice = 996,
+                            Energy = 187,
+                            GameVersionId = 1,
+                            GrowTime = "4 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Pumpkin",
+                            LocationId = 8,
+                            Method = "Gardening",
+                            SellsFor = 664,
+                            Water = 2,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 38,
+                            Energy = 275,
+                            GameVersionId = 1,
+                            GrowTime = "17 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Raspberry",
+                            LocationId = 2,
+                            Method = "Gardening",
+                            SellsFor = 21,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 39,
+                            BuyPrice = 92,
+                            Energy = 59,
+                            GameVersionId = 1,
+                            GrowTime = "50 m",
+                            IngredientCategory = "Grains",
+                            IngredientName = "Rice",
+                            LocationId = 5,
+                            Method = "Gardening",
+                            SellsFor = 61,
+                            Water = 2,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 40,
+                            Energy = 125,
+                            GameVersionId = 1,
+                            IngredientCategory = "Seafood",
+                            IngredientName = "Scallop",
+                            LocationId = 3,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 41,
+                            BuyPrice = 150,
+                            Energy = 225,
+                            GameVersionId = 1,
+                            IngredientCategory = "Ice",
+                            IngredientName = "Slush Ice",
+                            LocationId = 32,
+                            Method = "Purchase",
+                            Notes = "After The Unknown Flavor",
+                            SellsFor = 150
+                        },
+                        new
+                        {
+                            IngredientId = 42,
+                            BuyPrice = 104,
+                            Energy = 58,
+                            GameVersionId = 1,
+                            GrowTime = "1 h 30 m",
+                            IngredientCategory = "Dairy and Oil",
+                            IngredientName = "Soya",
+                            LocationId = 6,
+                            Method = "Gardening",
+                            SellsFor = 69,
+                            Water = 2,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 43,
+                            BuyPrice = 62,
+                            Energy = 60,
+                            GameVersionId = 1,
+                            GrowTime = "1 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Spinach",
+                            LocationId = 5,
+                            Method = "Gardening",
+                            SellsFor = 41,
+                            Water = 2,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 44,
+                            BuyPrice = 29,
+                            Energy = 46,
+                            GameVersionId = 1,
+                            GrowTime = "7 m",
+                            IngredientCategory = "Sweetener",
+                            IngredientName = "Sugarcane",
+                            LocationId = 3,
+                            Method = "Gardening",
+                            SellsFor = 19,
+                            Water = 1,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 45,
+                            BuyPrice = 33,
+                            Energy = 21,
+                            GameVersionId = 1,
+                            GrowTime = "25 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Tomato",
+                            LocationId = 3,
+                            Method = "Gardening",
+                            SellsFor = 22,
+                            Water = 2,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 46,
+                            Energy = 135,
+                            GameVersionId = 1,
+                            IngredientCategory = "Sweetener",
+                            IngredientName = "Vanilla",
+                            LocationId = 6,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 47,
+                            BuyPrice = 3,
+                            Energy = 19,
+                            GameVersionId = 1,
+                            GrowTime = "1 m",
+                            IngredientCategory = "Grains",
+                            IngredientName = "Wheat",
+                            LocationId = 2,
+                            Method = "Gardening",
+                            SellsFor = 2,
+                            Water = 1,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 48,
+                            BuyPrice = 78,
+                            Energy = 48,
+                            GameVersionId = 1,
+                            GrowTime = "40 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Zucchini",
+                            LocationId = 6,
+                            Method = "Gardening",
+                            SellsFor = 52,
+                            Water = 2,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 49,
+                            Energy = 100,
+                            GameVersionId = 2,
+                            IngredientCategory = "Sweetener",
+                            IngredientName = "Agave",
+                            LocationId = 10,
+                            Method = "Foraging",
+                            SellsFor = 25
+                        },
+                        new
+                        {
+                            IngredientId = 50,
+                            Energy = 500,
+                            GameVersionId = 2,
+                            GrowTime = "50 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Almonds",
+                            LocationId = 11,
+                            Method = "Foraging",
+                            SellsFor = 42,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 51,
+                            Energy = 155,
+                            GameVersionId = 2,
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Bamboo",
+                            LocationId = 11,
+                            Method = "Foraging",
+                            SellsFor = 80
+                        },
+                        new
+                        {
+                            IngredientId = 52,
+                            Energy = 41,
+                            GameVersionId = 2,
+                            GrowTime = "1 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Beans",
+                            LocationId = 10,
+                            Method = "Gardening",
+                            SellsFor = 49,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 53,
+                            Energy = 73,
+                            GameVersionId = 2,
+                            GrowTime = "40 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Broccoli",
+                            LocationId = 10,
+                            Method = "Gardening",
+                            SellsFor = 152,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 54,
+                            Energy = 142,
+                            GameVersionId = 2,
+                            GrowTime = "1 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Cabbage",
+                            LocationId = 11,
+                            Method = "Gardening",
+                            SellsFor = 256,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 55,
+                            Energy = 400,
+                            GameVersionId = 2,
+                            GrowTime = "45 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Cactoberries",
+                            LocationId = 10,
+                            Method = "Foraging",
+                            SellsFor = 34,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 56,
+                            Energy = 60,
+                            GameVersionId = 2,
+                            GrowTime = "10 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Celery",
+                            LocationId = 9,
+                            Method = "Gardening",
+                            SellsFor = 65,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 57,
+                            Energy = 155,
+                            GameVersionId = 2,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Cinnamon",
+                            LocationId = 11,
+                            Method = "Foraging",
+                            SellsFor = 30
+                        },
+                        new
+                        {
+                            IngredientId = 58,
+                            Energy = 52,
+                            GameVersionId = 2,
+                            GrowTime = "25 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Cosmic Figs",
+                            LocationId = 9,
+                            Method = "Gardening",
+                            SellsFor = 22,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 59,
+                            Energy = 90,
+                            GameVersionId = 2,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Cumin",
+                            LocationId = 9,
+                            Method = "Foraging",
+                            SellsFor = 15
+                        },
+                        new
+                        {
+                            IngredientId = 60,
+                            Energy = 350,
+                            GameVersionId = 2,
+                            GrowTime = "55 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Dates",
+                            LocationId = 10,
+                            Method = "Foraging",
+                            SellsFor = 29,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 61,
+                            Energy = 600,
+                            GameVersionId = 2,
+                            GrowTime = "1 h",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Dreamango",
+                            LocationId = 11,
+                            Method = "Foraging",
+                            SellsFor = 50,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 62,
+                            Energy = 46,
+                            GameVersionId = 2,
+                            GrowTime = "10 m",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Flute Root",
+                            LocationId = 9,
+                            Method = "Gardening",
+                            SellsFor = 112,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 63,
+                            Energy = 21,
+                            GameVersionId = 2,
+                            GrowTime = "20 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Grapes",
+                            LocationId = 9,
+                            Method = "Gardening",
+                            SellsFor = 9,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 64,
+                            Energy = 105,
+                            GameVersionId = 2,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Majestea",
+                            LocationId = 9,
+                            Method = "Foraging",
+                            SellsFor = 30
+                        },
+                        new
+                        {
+                            IngredientId = 65,
+                            Energy = 88,
+                            GameVersionId = 2,
+                            GrowTime = "30 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Melon",
+                            LocationId = 10,
+                            Method = "Gardening",
+                            SellsFor = 93,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 66,
+                            Energy = 300,
+                            GameVersionId = 2,
+                            GrowTime = "35 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Nestling Pear",
+                            LocationId = 9,
+                            Method = "Foraging",
+                            SellsFor = 25,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 67,
+                            Energy = 125,
+                            GameVersionId = 2,
+                            IngredientCategory = "Spices",
+                            IngredientName = "Paprika",
+                            LocationId = 10,
+                            Method = "Foraging",
+                            SellsFor = 50
+                        },
+                        new
+                        {
+                            IngredientId = 68,
+                            Energy = 168,
+                            GameVersionId = 2,
+                            GrowTime = "3 h",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Pineapple",
+                            LocationId = 11,
+                            Method = "Gardening",
+                            SellsFor = 532,
+                            Yield = 1
+                        },
+                        new
+                        {
+                            IngredientId = 69,
+                            BuyPrice = 250,
+                            Energy = 250,
+                            GameVersionId = 2,
+                            IngredientCategory = "Protein",
+                            IngredientName = "Pork",
+                            LocationId = 10,
+                            Method = "Purchase",
+                            SellsFor = 250
+                        },
+                        new
+                        {
+                            IngredientId = 70,
+                            BuyPrice = 500,
+                            Energy = 250,
+                            GameVersionId = 2,
+                            IngredientCategory = "Protein",
+                            IngredientName = "Poultry",
+                            LocationId = 10,
+                            Method = "Purchase",
+                            SellsFor = 500
+                        },
+                        new
+                        {
+                            IngredientId = 71,
+                            Energy = 37,
+                            GameVersionId = 2,
+                            GrowTime = "2 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Ruby Lentils",
+                            LocationId = 11,
+                            Method = "Gardening",
+                            SellsFor = 156,
+                            Yield = 3
+                        },
+                        new
+                        {
+                            IngredientId = 72,
+                            Energy = 275,
+                            GameVersionId = 2,
+                            GrowTime = "30 m",
+                            IngredientCategory = "Fruit",
+                            IngredientName = "Strawberry",
+                            LocationId = 9,
+                            Method = "Foraging",
+                            SellsFor = 23,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 73,
+                            Energy = 263,
+                            GameVersionId = 2,
+                            GrowTime = "4 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Turnip",
+                            LocationId = 11,
+                            Method = "Gardening",
+                            SellsFor = 187,
+                            Yield = 2
+                        },
+                        new
+                        {
+                            IngredientId = 74,
+                            BuyPrice = 1000,
+                            Energy = 250,
+                            GameVersionId = 2,
+                            IngredientCategory = "Protein",
+                            IngredientName = "Venison",
+                            LocationId = 10,
+                            Method = "Purchase",
+                            SellsFor = 500
+                        },
+                        new
+                        {
+                            IngredientId = 75,
+                            Energy = 83,
+                            GameVersionId = 2,
+                            GrowTime = "4 h",
+                            IngredientCategory = "Vegetables",
+                            IngredientName = "Yam",
+                            LocationId = 9,
+                            Method = "Gardening",
+                            SellsFor = 36,
+                            Yield = 1
+                        });
+                });
+
             modelBuilder.Entity("DDVTracker.Models.Location", b =>
                 {
                     b.Property<int>("LocationId")
@@ -1630,6 +2676,12 @@ namespace DDVTracker.Data.Migrations
                             Cost = "3000 Dreamlight",
                             GameVersionId = 1,
                             LocationName = "WALL-E Realm"
+                        },
+                        new
+                        {
+                            LocationId = 32,
+                            GameVersionId = 1,
+                            LocationName = "Chez Remy"
                         });
                 });
 
@@ -1874,6 +2926,17 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("Fish");
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.Ingredient", b =>
+                {
+                    b.HasOne("DDVTracker.Models.GameVersion", "GameVersion")
+                        .WithMany()
+                        .HasForeignKey("GameVersionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GameVersion");
                 });
 
             modelBuilder.Entity("DDVTracker.Models.Location", b =>
