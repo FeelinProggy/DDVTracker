@@ -17,17 +17,17 @@
         </p>
     }
 }
-
 <div class="container">
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-3">
+            <!-- Adjusted column sizes for different breakpoints -->
+            <div class="col-xl-3 col-md-4 col-sm-5 col-10">
                 <div class="card" style="border-color: @item.RippleColor;">
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(item.ImageBase64))
                         {
-                            <img src="data:image/jpeg;base64,@item.ImageBase64" alt="Fish Image" class="img-fluid" />
+                            <img src="data:image/jpeg;base64,@item.ImageBase64" width="200" alt="Fish Image" class="img-fluid" />
                         }
                         else
                         {
