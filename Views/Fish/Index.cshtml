@@ -21,8 +21,8 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <!-- Adjusted column sizes for different breakpoints -->
-            <div class="col-xl-3 col-md-4 col-sm-5 col-10">
+
+            <div class="col">
                 <div class="card" style="border-color: @item.RippleColor;">
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(item.ImageBase64))
