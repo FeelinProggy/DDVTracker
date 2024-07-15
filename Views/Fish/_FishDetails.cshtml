@@ -12,7 +12,7 @@
         <dd class="col">
             @if (!string.IsNullOrEmpty(Model.ImageBase64))
             {
-                <img src="data:image/jpeg;base64,@Model.ImageBase64" alt="Fish Image" width="100" />
+                <img src="data:image/jpeg;base64,@Model.ImageBase64" alt="Fish Image" />
             }
             else
             {
@@ -47,6 +47,18 @@
                     <li>@fishLocation.Location.LocationName</li>
                 }
             </ul>
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col">
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd class="col-10">
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+
+                @Html.DisplayFor(model => model.Notes)
+            }
         </dd>
     </dl>
 </div>
