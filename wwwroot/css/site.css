@@ -87,6 +87,8 @@ a {
 /* Collection views */
     .card {
         background-color: transparent;
+        border-width: 3px;
+        margin: 3px;
         width: 220px ;
     }
 }
