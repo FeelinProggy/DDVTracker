@@ -1,0 +1,52 @@
+﻿@model DDVTracker.Models.Fish
+
+@{
+    Layout = null;
+}
+
+<div>
+    <dl class="row">
+        <dd class="col">
+            @Html.DisplayFor(model => model.FishName)
+        </dd>
+        <dd class="col">
+            @if (!string.IsNullOrEmpty(Model.ImageBase64))
+            {
+                <img src="data:image/jpeg;base64,@Model.ImageBase64" alt="Fish Image" width="100" />
+            }
+            else
+            {
+                <p>No image available</p>
+            }
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class = "col">
+            @Html.DisplayNameFor(model => model.GameVersion)
+        </dt>
+        <dd class = "col">
+            @Html.DisplayFor(model => model.GameVersion.GameVersionName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col">
+            @Html.DisplayNameFor(model => model.RippleColor)
+        </dt>
+        <dd class="col">
+            @Html.DisplayFor(model => model.RippleColor)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col">
+            @Html.DisplayNameFor(model => model.FishLocations)
+        </dt>
+        <dd class = "col-7">
+            <ul>
+                @foreach (var fishLocation in Model.FishLocations)
+                {
+                    <li>@fishLocation.Location.LocationName</li>
+                }
+            </ul>
+        </dd>
+    </dl>
+</div>

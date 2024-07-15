@@ -224,24 +224,21 @@ namespace DDVTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Fish/Details/5
+        // GET: Fish/Details
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var fish = await _context.Fish
                 .Include(f => f.GameVersion)
-                .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
+                .Include(f => f.FishLocations)
+                .ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
+
             if (fish == null)
             {
                 return NotFound();
             }
 
-            return View(fish);
+            return PartialView("_FishDetails", fish);
         }
         private bool FishExists(int id)
         {
