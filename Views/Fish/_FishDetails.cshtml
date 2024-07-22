@@ -6,8 +6,8 @@
 
 <div>
     <dl class="row">
-        <dd class="col-4">
-            <h5>@Html.DisplayFor(model => model.FishName)</h5>
+        <dd class="col">
+            @Html.DisplayFor(model => model.FishName)
         </dd>
         <dd class="col">
             @if (!string.IsNullOrEmpty(Model.ImageBase64))
@@ -22,7 +22,7 @@
     </dl>
     <dl class="row">
         <dt class = "col">
-            Game Version:
+            @Html.DisplayNameFor(model => model.GameVersion)
         </dt>
         <dd class = "col">
             @Html.DisplayFor(model => model.GameVersion.GameVersionName)
@@ -30,7 +30,7 @@
     </dl>
     <dl class="row">
         <dt class="col">
-            Ripple Color:
+            @Html.DisplayNameFor(model => model.RippleColor)
         </dt>
         <dd class="col">
             @Html.DisplayFor(model => model.RippleColor)
@@ -38,7 +38,7 @@
     </dl>
     <dl class="row">
         <dt class="col">
-            Can be found in:
+            @Html.DisplayNameFor(model => model.FishLocations)
         </dt>
         <dd class = "col-7">
             <ul>
@@ -51,7 +51,7 @@
     </dl>
     <dl class="row">
         <dt class="col">
-            Notes:
+            @Html.DisplayNameFor(model => model.Notes)
         </dt>
         <dd class="col-10">
             @if (!string.IsNullOrEmpty(Model.Notes))
