@@ -190,14 +190,14 @@ namespace DDVTracker.Controllers
                 .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
 
-            return View(fish);
+            return PartialView("_FishDelete", fish);
         }
 
         // POST: Fish/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RequireModeratorRole")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var fish = await _context.Fish.Include(f => f.FishLocations).FirstOrDefaultAsync(f => f.FishId == id);
             if (fish != null)
@@ -211,9 +211,9 @@ namespace DDVTracker.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Fish/Details
         public async Task<IActionResult> Details(int? id)
