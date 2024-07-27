@@ -97,11 +97,6 @@ namespace DDVTracker.Controllers
 
             var fish = await _context.Fish.FindAsync(id);
 
-            if (fish == null)
-            {
-                return NotFound();
-            }
-
             var allLocations = _context.Locations.ToList();
             var fishLocations = _context.FishLocations.Where(fl => fl.FishId == fish.FishId).Select(fl => fl.LocationId).ToList();
 
@@ -194,10 +189,6 @@ namespace DDVTracker.Controllers
                 .Include(f => f.GameVersion)
                 .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
-            if (fish == null)
-            {
-                return NotFound();
-            }
 
             return View(fish);
         }
@@ -239,10 +230,6 @@ namespace DDVTracker.Controllers
             }
 
             return PartialView("_FishDetails", fish);
-        }
-        private bool FishExists(int id)
-        {
-            return _context.Fish.Any(e => e.FishId == id);
         }
     }
 }

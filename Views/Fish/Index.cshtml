@@ -39,6 +39,7 @@
                             Details
                         </button>
 
+
                         @{
                             // Only show the edit and delete buttons if the user is signed in and is not a regular user
                             if (SignInManager.IsSignedIn(User) && !User.IsInRole(IdentityHelper.User))
@@ -52,13 +53,13 @@
             </div>
         }
     </div>
-    <!-- Modal Structure (moved outside the loop) -->
+    <!-- Modal Structure -->
     <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="detailsModalLabel">Fish Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Dynamic content will be loaded here -->
