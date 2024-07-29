@@ -22,7 +22,7 @@ namespace DDVTracker.Data
         public DbSet<FishLocation> FishLocations { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Meal> Meals { get; set; }
-        public DbSet<MealIngredient> MealIngredients { get; set; }
+        //public DbSet<MealIngredient> MealIngredients { get; set; }
 
 
 
@@ -72,6 +72,12 @@ namespace DDVTracker.Data
 
             );
 
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.GameVersion)
+                .WithMany(gv => gv.Characters)
+                .HasForeignKey(c => c.GameVersionId);
+
             modelBuilder.Entity<Character>().HasData(
                 new Character { CharacterId = 1, GameVersionId = 1, CharacterName = "Anna", AcquiredBy = "Realm", AcquiredFrom = "Frozen Realm", Notes = "Unlock Realm" },
                 new Character { CharacterId = 2, GameVersionId = 1, CharacterName = "Ariel", AcquiredBy = "Quest", AcquiredFrom = "Goofy", Notes = "The Mysterious Wreck" },
@@ -113,6 +119,18 @@ namespace DDVTracker.Data
 
 
             );
+
+            modelBuilder.Entity<FishLocation>()
+                .HasOne(fl => fl.Fish)
+                .WithMany(f => f.FishLocations)
+                .HasForeignKey(fl => fl.FishId)
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
+
+            modelBuilder.Entity<FishLocation>()
+                .HasOne(fl => fl.Location)
+                .WithMany(l => l.FishLocations)
+                .HasForeignKey(fl => fl.LocationId)
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
 
             modelBuilder.Entity<Fish>().HasData(
                 new Fish { FishId = 1, GameVersionId = 1, FishName = "Anglerfish", RippleColor = "Orange", SellsFor = 1500, Energy = 2000, },
@@ -246,6 +264,30 @@ namespace DDVTracker.Data
                 new FishLocation { FishLocationId = 85, FishId = 26, LocationId = 7 }
             );
 
+            modelBuilder.Entity<Meal>()
+                .HasKey(m => m.MealId);
+
+            modelBuilder.Entity<Meal>()
+                .HasOne(m => m.GameVersion)
+                .WithMany()
+                .HasForeignKey(m => m.GameVersionId);
+
+            modelBuilder.Entity<Ingredient>()
+                .HasKey(i => i.IngredientId);
+
+            //modelBuilder.Entity<MealIngredient>()
+            //    .HasKey(mi => new { mi.MealId, mi.IngredientId });
+
+            //modelBuilder.Entity<MealIngredient>()
+            //    .HasOne(mi => mi.Meal)
+            //    .WithMany(m => m.MealIngredients)
+            //    .HasForeignKey(mi => mi.MealId);
+
+            //modelBuilder.Entity<MealIngredient>()
+            //    .HasOne(mi => mi.Ingredient)
+            //    .WithMany(i => i.MealIngredients)
+            //    .HasForeignKey(mi => mi.IngredientId);
+
             modelBuilder.Entity<Ingredient>().HasData(
                 new Ingredient { IngredientId = 1, IngredientName = "Apple", GameVersionId = 1, IngredientCategory = "Fruit", BuyPrice = 50, SellsFor = 25, Energy = 300, GrowTime = "20 m", Water = null, Yield = 3, LocationId = 1, Method = "Gardening" },
                 new Ingredient { IngredientId = 2, IngredientName = "Asparagus", GameVersionId = 1, IngredientCategory = "Vegetables", BuyPrice = 200, SellsFor = 133, Energy = 42, GrowTime = "2 h 15 m", Water = 2, Yield = 3, LocationId = 7, Method = "Gardening" },
@@ -371,37 +413,6 @@ namespace DDVTracker.Data
             new Meal { MealId = 44, MealName = "Carrot Cake", GameVersionId = 1, MealType = "Desserts", SellsFor = 427, Energy = 908 },
             new Meal { MealId = 45, MealName = "Charlotte Cake", GameVersionId = 2, MealType = "Desserts", SellsFor = 69, Energy = 759 }
             );
-
-
-            modelBuilder.Entity<Character>()
-                .HasOne(c => c.GameVersion)
-                .WithMany(gv => gv.Characters)
-                .HasForeignKey(c => c.GameVersionId);
-
-            modelBuilder.Entity<FishLocation>()
-                .HasOne(fl => fl.Fish)
-                .WithMany(f => f.FishLocations)
-                .HasForeignKey(fl => fl.FishId)
-                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
-
-            modelBuilder.Entity<FishLocation>()
-                .HasOne(fl => fl.Location)
-                .WithMany(l => l.FishLocations)
-                .HasForeignKey(fl => fl.LocationId)
-                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
-
-            modelBuilder.Entity<MealIngredient>()
-                .HasKey(mi => new { mi.MealID, mi.IngredientID });
-
-            modelBuilder.Entity<MealIngredient>()
-                .HasOne(mi => mi.Meal)
-                .WithMany(m => m.MealIngredients)
-                .HasForeignKey(mi => mi.MealID);
-
-            modelBuilder.Entity<MealIngredient>()
-                .HasOne(mi => mi.Ingredient)
-                .WithMany(i => i.MealIngredients)
-                .HasForeignKey(mi => mi.IngredientID);
 
         }
 

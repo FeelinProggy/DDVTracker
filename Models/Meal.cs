@@ -13,6 +13,7 @@ namespace DDVTracker.Models
         /// </summary>
         public int GameVersionId { get; set; }
         public GameVersion? GameVersion { get; set; }
+
         public string MealName { get; set; }
 
         /// <summary>
@@ -33,8 +34,9 @@ namespace DDVTracker.Models
         /// <summary>
         /// Navigation property for the Meal's Ingredients
         /// </summary>
-        public ICollection<Ingredient> Ingredients { get; set; }
-        public ICollection<MealIngredient> MealIngredients { get; set; }
+        public ICollection<Ingredient>? Ingredients { get; set; }
+
+        //public ICollection<MealIngredient>? MealIngredients { get; set; }
 
         // Calculated property for star rating
         public int StarRating
