@@ -11,11 +11,12 @@ namespace DDVTracker.Models
         public int IngredientId { get; set; }
 
         /// <summary>
-        /// Foreign key for GameVersionId of the game the character is included in
+        /// Foreign key for GameVersionId of the game the Ingredient is included in
         /// Navigation property for the GameVersion
         /// </summary>
         public int GameVersionId { get; set; }
         public GameVersion? GameVersion { get; set; }
+
         public string IngredientName { get; set; }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace DDVTracker.Models
         public int? BuyPrice { get; set; }
 
         /// <summary>
-        /// Price to buy from stall
+        /// Price to sell to stall
         /// </summary>
         public int? SellsFor { get; set; }
 
@@ -37,8 +38,9 @@ namespace DDVTracker.Models
         /// Energy gained from eating
         /// </summary>
         public int? Energy { get; set; }
+
         /// <summary>
-        /// Time to grow in real time
+        /// Time to grow crop in real time
         /// </summary>
         public string? GrowTime { get; set; }
 
@@ -67,5 +69,13 @@ namespace DDVTracker.Models
         /// i.e. quest to be completed first
         /// </summary>
         public string? Notes { get; set; }
+
+        /// <summary>
+        /// Navigation property for Meals containing the ingredient.
+        /// </summary>
+        public ICollection<Meal> Meals { get; set; }
+
+        
+        public ICollection<MealIngredient> MealIngredients { get; set; }
     }
 }

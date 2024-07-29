@@ -29,5 +29,25 @@ namespace DDVTracker.Models
         /// Energy gained from eating
         /// </summary>
         public int? Energy { get; set; }
+
+        /// <summary>
+        /// Navigation property for the Meal's Ingredients
+        /// </summary>
+        public ICollection<Ingredient> Ingredients { get; set; }
+        public ICollection<MealIngredient> MealIngredients { get; set; }
+
+        // Calculated property for star rating
+        public int StarRating
+        {
+            get
+            {
+
+                // Determine star rating based on the number of ingredients
+                if (Ingredients == null)
+                    return 0;
+                else
+                    return Ingredients.Count;
+            }
+        }
     }
 }
