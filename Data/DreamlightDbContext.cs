@@ -22,6 +22,7 @@ namespace DDVTracker.Data
         public DbSet<FishLocation> FishLocations { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Meal> Meals { get; set; }
+
         //public DbSet<MealIngredient> MealIngredients { get; set; }
 
 
@@ -270,7 +271,8 @@ namespace DDVTracker.Data
             modelBuilder.Entity<Meal>()
                 .HasOne(m => m.GameVersion)
                 .WithMany()
-                .HasForeignKey(m => m.GameVersionId);
+                .HasForeignKey(m => m.GameVersionId)
+                .OnDelete(DeleteBehavior.Restrict);  // Restrict to avoid cascade delete
 
             modelBuilder.Entity<Ingredient>()
                 .HasKey(i => i.IngredientId);
