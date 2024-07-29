@@ -20,6 +20,9 @@ namespace DDVTracker.Data
         public DbSet<Fish> Fish { get; set; }
 
         public DbSet<FishLocation> FishLocations { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<MealIngredient> MealIngredients { get; set; }
 
 
 
@@ -321,8 +324,10 @@ namespace DDVTracker.Data
                 new Ingredient { IngredientId = 75, IngredientName = "Yam", GameVersionId = 2, IngredientCategory = "Vegetables", BuyPrice = null, SellsFor = 36, Energy = 83, GrowTime = "4 h", Water = null, Yield = 1, LocationId = 9, Method = "Gardening" }
             );
 
-            // Set up the foreign key relationship. One Theme to many characters
-            modelBuilder.Entity<Character>().HasOne(c => c.GameVersion).WithMany(gv => gv.Characters).HasForeignKey(c => c.GameVersionId);
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.GameVersion)
+                .WithMany(gv => gv.Characters)
+                .HasForeignKey(c => c.GameVersionId);
 
             modelBuilder.Entity<FishLocation>()
                 .HasOne(fl => fl.Fish)
@@ -335,6 +340,19 @@ namespace DDVTracker.Data
                 .WithMany(l => l.FishLocations)
                 .HasForeignKey(fl => fl.LocationId)
                 .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
+
+            modelBuilder.Entity<MealIngredient>()
+                .HasKey(mi => new { mi.MealID, mi.IngredientID });
+
+            modelBuilder.Entity<MealIngredient>()
+                .HasOne(mi => mi.Meal)
+                .WithMany(m => m.MealIngredients)
+                .HasForeignKey(mi => mi.MealID);
+
+            modelBuilder.Entity<MealIngredient>()
+                .HasOne(mi => mi.Ingredient)
+                .WithMany(i => i.MealIngredients)
+                .HasForeignKey(mi => mi.IngredientID);
 
         }
 
