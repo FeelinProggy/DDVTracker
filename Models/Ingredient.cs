@@ -76,6 +76,6 @@ namespace DDVTracker.Models
         public ICollection<Meal>? Meals { get; set; }
 
         
-        //public ICollection<MealIngredient>? MealIngredients { get; set; }
+        public ICollection<MealIngredient>? MealIngredients { get; set; }
     }
 }

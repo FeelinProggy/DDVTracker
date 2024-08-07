@@ -23,7 +23,7 @@ namespace DDVTracker.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Meal> Meals { get; set; }
 
-        //public DbSet<MealIngredient> MealIngredients { get; set; }
+        public DbSet<MealIngredient> MealIngredients { get; set; }
 
 
 
@@ -277,18 +277,18 @@ namespace DDVTracker.Data
             modelBuilder.Entity<Ingredient>()
                 .HasKey(i => i.IngredientId);
 
-            //modelBuilder.Entity<MealIngredient>()
-            //    .HasKey(mi => new { mi.MealId, mi.IngredientId });
+            modelBuilder.Entity<MealIngredient>()
+            .HasKey(mi => new { mi.MealId, mi.IngredientId });
 
-            //modelBuilder.Entity<MealIngredient>()
-            //    .HasOne(mi => mi.Meal)
-            //    .WithMany(m => m.MealIngredients)
-            //    .HasForeignKey(mi => mi.MealId);
+            modelBuilder.Entity<MealIngredient>()
+                .HasOne(mi => mi.Meal)
+                .WithMany(m => m.MealIngredients)
+                .HasForeignKey(mi => mi.MealId);
 
-            //modelBuilder.Entity<MealIngredient>()
-            //    .HasOne(mi => mi.Ingredient)
-            //    .WithMany(i => i.MealIngredients)
-            //    .HasForeignKey(mi => mi.IngredientId);
+            modelBuilder.Entity<MealIngredient>()
+                .HasOne(mi => mi.Ingredient)
+                .WithMany(i => i.MealIngredients)
+                .HasForeignKey(mi => mi.IngredientId);
 
             modelBuilder.Entity<Ingredient>().HasData(
                 new Ingredient { IngredientId = 1, IngredientName = "Apple", GameVersionId = 1, IngredientCategory = "Fruit", BuyPrice = 50, SellsFor = 25, Energy = 300, GrowTime = "20 m", Water = null, Yield = 3, LocationId = 1, Method = "Gardening" },
