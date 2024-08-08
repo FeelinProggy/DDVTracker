@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DDVTracker.Models
 {
@@ -38,6 +39,10 @@ namespace DDVTracker.Models
 
         public ICollection<MealIngredient>? MealIngredients { get; set; }
 
+
+        [NotMapped]
+        public List<int>? SelectedIngredientIds { get; set; }
+
         // Calculated property for star rating
         public int StarRating
         {
@@ -45,10 +50,10 @@ namespace DDVTracker.Models
             {
 
                 // Determine star rating based on the number of ingredients
-                if (Ingredients == null)
+                if (SelectedIngredientIds == null)
                     return 0;
                 else
-                    return Ingredients.Count;
+                    return SelectedIngredientIds.Count;
             }
         }
     }
