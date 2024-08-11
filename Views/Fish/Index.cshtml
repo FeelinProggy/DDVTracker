@@ -17,12 +17,12 @@
         </p>
     }
 }
-
 <div class="container">
-    <div class="row">
+    <div class="row row-cols-auto">
         @foreach (var item in Model)
         {
-            <div class="col-md-3">
+
+            <div class="col">
                 <div class="card" style="border-color: @item.RippleColor;">
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(item.ImageBase64))
@@ -35,20 +35,19 @@
                         }
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.FishName)</h5>
                         <h6 class="card-subtitle">@Html.DisplayFor(modelItem => item.GameVersion.GameVersionName)</h6>
-                        <ul>
-                            @foreach (var fishLocation in item.FishLocations)
-                            {
-                                <li>@fishLocation.Location.LocationName</li>
-                            }
-                        </ul>
-                        <a asp-action="Details" asp-route-id="@item.FishId" class="btn btn-primary">Details</a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal" data-fishid="@item.FishId">
+                            Details
+                        </button>
+
 
                         @{
                             // Only show the edit and delete buttons if the user is signed in and is not a regular user
                             if (SignInManager.IsSignedIn(User) && !User.IsInRole(IdentityHelper.User))
                             {
                                 <a asp-action="Edit" asp-route-id="@item.FishId" class="btn btn-primary">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.FishId" class="btn btn-danger">Delete</a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-fishid="@item.FishId">
+                                    Delete
+                                </button>
                             }
                         }
                     </div>
@@ -56,4 +55,87 @@
             </div>
         }
     </div>
+    <!-- Details Modal Structure -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Fish Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Dynamic content will be loaded here -->
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Delete Modal Structure -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Fish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var detailsModal = document.getElementById('detailsModal');
+        detailsModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var fishId = button.getAttribute('data-fishid');
+            var modalTitle = detailsModal.querySelector('.modal-title');
+            var modalBody = detailsModal.querySelector('.modal-body');
+
+            // Update the modal's content.
+            modalTitle.textContent = 'Fish Details';
+            modalBody.textContent = 'Loading...';
+
+            // AJAX call with Fetch API to get fish details
+            fetch(`/Fish/Details/${fishId}`)
+                .then(response => response.text())
+                .then(html => {
+                    modalBody.innerHTML = html;
+                })
+                .catch(error => {
+                    modalBody.textContent = 'An error occurred. Please try again.';
+                });
+        });
+
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var fishId = button.getAttribute('data-fishid');
+            var modalTitle = deleteModal.querySelector('.modal-title');
+            var modalBody = deleteModal.querySelector('.modal-body');
+
+            // Update the modal's content.
+            modalTitle.textContent = 'Delete Fish';
+            modalBody.textContent = 'Loading...';
+
+            fetch(`/Fish/Delete/${fishId}`)
+                .then(response => response.text())
+                .then(html => {
+                    modalBody.innerHTML = html;
+                })
+                .catch(error => {
+                    modalBody.textContent = 'An error occurred. Please try again.';
+                });
+        });
+    });
+</script>
