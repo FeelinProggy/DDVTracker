@@ -80,6 +80,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Meals/Edit/5
+        [HttpGet]
         [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -114,7 +115,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MealId,GameVersionId,MealName,MealType,SellsFor,Energy")] Meal meal)
+        public async Task<IActionResult> Edit(int id, [Bind("MealId,GameVersionId,MealName,MealType,SelectedIngredientIds,SellsFor,Energy")] Meal meal)
         {
             if (id != meal.MealId)
             {
@@ -123,22 +124,38 @@ namespace DDVTracker.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var existingMeal = await _context.Meals.Include(m => m.MealIngredients).FirstOrDefaultAsync(m => m.MealId == meal.MealId);
+                
+                // Update the properties of the existing Meal object
+                existingMeal.GameVersionId = meal.GameVersionId;
+                existingMeal.MealName = meal.MealName;
+                existingMeal.MealType = meal.MealType;
+                existingMeal.SellsFor = meal.SellsFor;
+                existingMeal.Energy = meal.Energy;
+
+                // Update the MealIngredients
+                if (meal.SelectedIngredientIds != null)
                 {
-                    _context.Update(meal);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MealExists(meal.MealId))
+                    var existingMealIngredientIds = existingMeal.MealIngredients.Select(mi => mi.IngredientId).ToList();
+                    var newMealIngredientIds = meal.SelectedIngredientIds.Except(existingMealIngredientIds).ToList();
+                    var removedMealIngredientIds = existingMealIngredientIds.Except(meal.SelectedIngredientIds).ToList();
+
+                    // Add new MealIngredients
+                    foreach (var newIngredientId in newMealIngredientIds)
                     {
-                        return NotFound();
+                        existingMeal.MealIngredients.Add(new MealIngredient { MealId = meal.MealId, IngredientId = newIngredientId });
                     }
-                    else
+
+                    // Remove MealIngredients
+                    foreach (var removedIngredientId in removedMealIngredientIds)
                     {
-                        throw;
+                        var removedMealIngredient = existingMeal.MealIngredients.FirstOrDefault(mi => mi.IngredientId == removedIngredientId);
+                        existingMeal.MealIngredients.Remove(removedMealIngredient);
                     }
                 }
+                _context.Update(existingMeal);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", meal.GameVersionId);
@@ -146,6 +163,7 @@ namespace DDVTracker.Controllers
         }
 
         // GET: Meals/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
