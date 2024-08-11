@@ -115,6 +115,7 @@ namespace DDVTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Edit(int id, [Bind("MealId,GameVersionId,MealName,MealType,SelectedIngredientIds,SellsFor,Energy")] Meal meal)
         {
             if (id != meal.MealId)
@@ -164,6 +165,7 @@ namespace DDVTracker.Controllers
 
         // GET: Meals/Delete/5
         [HttpGet]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -185,6 +187,7 @@ namespace DDVTracker.Controllers
         // POST: Meals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var meal = await _context.Meals.FindAsync(id);
@@ -197,13 +200,6 @@ namespace DDVTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MealExists(int id)
-        {
-            return _context.Meals.Any(e => e.MealId == id);
-        }
-
-
-
         // GET: Meals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -214,6 +210,7 @@ namespace DDVTracker.Controllers
 
             var meal = await _context.Meals
                 .Include(m => m.GameVersion)
+                .Include(m => m.MealIngredients).ThenInclude(mi => mi.Ingredient)
                 .FirstOrDefaultAsync(m => m.MealId == id);
             if (meal == null)
             {

@@ -28,6 +28,17 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.MealType)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MealIngredients)
+        </dt>
+        <dd class="col-sm-10">
+            <ul>
+                @foreach (var mealIngredient in Model.MealIngredients)
+                {
+                    <li>@mealIngredient.Ingredient.IngredientName</li>
+                }
+            </ul>
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SellsFor)
         </dt>
