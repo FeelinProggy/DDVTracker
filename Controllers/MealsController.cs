@@ -27,7 +27,7 @@ namespace DDVTracker.Controllers
             return View(await dreamlightDbContext.ToListAsync());
         }
 
-        // GET: Meals/
+        // GET: Meals/Create
         [HttpGet]
         [Authorize(Policy = "RequireModeratorRole")]
         public IActionResult Create()
@@ -50,7 +50,7 @@ namespace DDVTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RequireModeratorRole")]
-        public async Task<IActionResult> Create([Bind("MealId,GameVersionId,MealName,MealType,SellsFor,Energy")] Meal meal)
+        public async Task<IActionResult> Create([Bind("MealId,GameVersionId,MealName,MealType,SelectedIngredientIds,SellsFor,Energy")] Meal meal)
         {
             if (ModelState.IsValid)
             {
@@ -61,21 +61,11 @@ namespace DDVTracker.Controllers
                 // Then save the MealIngredients
                 if (meal.SelectedIngredientIds != null)
                 {
-                    foreach (var ingredientId in meal.SelectedIngredientIds)
-                    {
-                        var mealIngredient = new MealIngredient
-                        {
-                            MealId = meal.MealId,
-                            IngredientId = ingredientId
-                        };
+                    meal.MealIngredients = meal.SelectedIngredientIds.Select(id => new MealIngredient { MealId = meal.MealId, IngredientId = id }).ToList();
+                    _context.AddRange(meal.MealIngredients);
 
-                        _context.Add(mealIngredient);
-                    }
-
-                    // Save changes for MealIngredients
                     await _context.SaveChangesAsync();
                 }
-
                 return RedirectToAction(nameof(Index));
             }
 
