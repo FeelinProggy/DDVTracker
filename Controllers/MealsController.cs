@@ -23,7 +23,7 @@ namespace DDVTracker.Controllers
         // GET: Meals
         public async Task<IActionResult> Index()
         {
-            var dreamlightDbContext = _context.Meals.Include(m => m.GameVersion);
+            var dreamlightDbContext = _context.Meals.Include(m => m.GameVersion).Include(m => m.MealIngredients);
             return View(await dreamlightDbContext.ToListAsync());
         }
 

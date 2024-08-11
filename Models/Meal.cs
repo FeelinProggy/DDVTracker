@@ -44,16 +44,11 @@ namespace DDVTracker.Models
         public List<int>? SelectedIngredientIds { get; set; }
 
         // Calculated property for star rating
-        public int StarRating
+        public int? StarRating
         {
             get
             {
-
-                // Determine star rating based on the number of ingredients
-                if (SelectedIngredientIds == null)
-                    return 0;
-                else
-                    return SelectedIngredientIds.Count;
+                return MealIngredients?.Count ?? 0;
             }
         }
     }
