@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    [Migration("20240613072104_DbInitial")]
-    partial class DbInitial
+    [Migration("20240807154233_MealIngrdiets")]
+    partial class MealIngrdiets
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1446,7 +1446,7 @@ namespace DDVTracker.Data.Migrations
 
                     b.HasIndex("GameVersionId");
 
-                    b.ToTable("Ingredient");
+                    b.ToTable("Ingredients");
 
                     b.HasData(
                         new
@@ -2685,6 +2685,474 @@ namespace DDVTracker.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DDVTracker.Models.Meal", b =>
+                {
+                    b.Property<int>("MealId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MealId"));
+
+                    b.Property<int?>("Energy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GameVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MealName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MealType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SellsFor")
+                        .HasColumnType("int");
+
+                    b.HasKey("MealId");
+
+                    b.HasIndex("GameVersionId");
+
+                    b.ToTable("Meals");
+
+                    b.HasData(
+                        new
+                        {
+                            MealId = 1,
+                            Energy = 679,
+                            GameVersionId = 1,
+                            MealName = "My Hero Cookie",
+                            MealType = "Desserts",
+                            SellsFor = 294
+                        },
+                        new
+                        {
+                            MealId = 2,
+                            Energy = 757,
+                            GameVersionId = 2,
+                            MealName = "Ajiaco",
+                            MealType = "Entrées",
+                            SellsFor = 898
+                        },
+                        new
+                        {
+                            MealId = 3,
+                            Energy = 1137,
+                            GameVersionId = 1,
+                            MealName = "Apple Pie",
+                            MealType = "Desserts",
+                            SellsFor = 303
+                        },
+                        new
+                        {
+                            MealId = 4,
+                            Energy = 823,
+                            GameVersionId = 2,
+                            MealName = "Apple Sauce",
+                            MealType = "Desserts",
+                            SellsFor = 71
+                        },
+                        new
+                        {
+                            MealId = 5,
+                            Energy = 1077,
+                            GameVersionId = 1,
+                            MealName = "Apple Sorbet",
+                            MealType = "Desserts",
+                            SellsFor = 271
+                        },
+                        new
+                        {
+                            MealId = 6,
+                            Energy = 1572,
+                            GameVersionId = 1,
+                            MealName = "Apple-Cider-Glazed Salmon",
+                            MealType = "Entrées",
+                            SellsFor = 271
+                        },
+                        new
+                        {
+                            MealId = 7,
+                            Energy = 2092,
+                            GameVersionId = 1,
+                            MealName = "Arendellian Pickled Herring",
+                            MealType = "Appetizers",
+                            SellsFor = 532
+                        },
+                        new
+                        {
+                            MealId = 8,
+                            Energy = 770,
+                            GameVersionId = 2,
+                            MealName = "Arepas Con Queso",
+                            MealType = "Appetizers",
+                            SellsFor = 309
+                        },
+                        new
+                        {
+                            MealId = 9,
+                            Energy = 1572,
+                            GameVersionId = 1,
+                            MealName = "Aurora's Cake",
+                            MealType = "Desserts",
+                            SellsFor = 767
+                        },
+                        new
+                        {
+                            MealId = 10,
+                            Energy = 544,
+                            GameVersionId = 2,
+                            MealName = "Baked Beans",
+                            MealType = "Entrées",
+                            SellsFor = 388
+                        },
+                        new
+                        {
+                            MealId = 11,
+                            Energy = 1894,
+                            GameVersionId = 1,
+                            MealName = "Baked Carp",
+                            MealType = "Entrées",
+                            SellsFor = 767
+                        },
+                        new
+                        {
+                            MealId = 12,
+                            Energy = 1884,
+                            GameVersionId = 1,
+                            MealName = "Banana Ice Cream",
+                            MealType = "Desserts",
+                            SellsFor = 641
+                        },
+                        new
+                        {
+                            MealId = 13,
+                            Energy = 1227,
+                            GameVersionId = 1,
+                            MealName = "Banana Pie",
+                            MealType = "Desserts",
+                            SellsFor = 308
+                        },
+                        new
+                        {
+                            MealId = 14,
+                            Energy = 2074,
+                            GameVersionId = 1,
+                            MealName = "Banana Split",
+                            MealType = "Desserts",
+                            SellsFor = 714
+                        },
+                        new
+                        {
+                            MealId = 15,
+                            Energy = 842,
+                            GameVersionId = 2,
+                            MealName = "Baozi",
+                            MealType = "Appetizers",
+                            SellsFor = 503
+                        },
+                        new
+                        {
+                            MealId = 16,
+                            Energy = 3118,
+                            GameVersionId = 2,
+                            MealName = "Barbecued Brilliant Blue Starfish",
+                            MealType = "Appetizers",
+                            SellsFor = 1202
+                        },
+                        new
+                        {
+                            MealId = 17,
+                            Energy = 2812,
+                            GameVersionId = 2,
+                            MealName = "Barbecued Pretty Pink Starfish",
+                            MealType = "Appetizers",
+                            SellsFor = 1202
+                        },
+                        new
+                        {
+                            MealId = 18,
+                            Energy = 1355,
+                            GameVersionId = 2,
+                            MealName = "Basil Berry Salad",
+                            MealType = "Desserts",
+                            SellsFor = 142
+                        },
+                        new
+                        {
+                            MealId = 19,
+                            Energy = 2035,
+                            GameVersionId = 1,
+                            MealName = "Basil Omelet",
+                            MealType = "Entrées",
+                            SellsFor = 1020
+                        },
+                        new
+                        {
+                            MealId = 20,
+                            Energy = 912,
+                            GameVersionId = 1,
+                            MealName = "Beignets",
+                            MealType = "Desserts",
+                            SellsFor = 524
+                        },
+                        new
+                        {
+                            MealId = 21,
+                            Energy = 1272,
+                            GameVersionId = 1,
+                            MealName = "Bell Pepper Puffs",
+                            MealType = "Appetizers",
+                            SellsFor = 606
+                        },
+                        new
+                        {
+                            MealId = 22,
+                            Energy = 2255,
+                            GameVersionId = 1,
+                            MealName = "Berry Salad",
+                            MealType = "Desserts",
+                            SellsFor = 139
+                        },
+                        new
+                        {
+                            MealId = 23,
+                            Energy = 4420,
+                            GameVersionId = 2,
+                            MealName = "Best Fish Forever",
+                            MealType = "Entrées",
+                            SellsFor = 1400
+                        },
+                        new
+                        {
+                            MealId = 24,
+                            Energy = 2310,
+                            GameVersionId = 1,
+                            MealName = "Birthday Cake",
+                            MealType = "Desserts",
+                            SellsFor = 749
+                        },
+                        new
+                        {
+                            MealId = 25,
+                            Energy = 1468,
+                            GameVersionId = 2,
+                            MealName = "Biryani",
+                            MealType = "Entrées",
+                            SellsFor = 1049
+                        },
+                        new
+                        {
+                            MealId = 26,
+                            Energy = 679,
+                            GameVersionId = 1,
+                            MealName = "Biscuits",
+                            MealType = "Desserts",
+                            SellsFor = 294
+                        },
+                        new
+                        {
+                            MealId = 27,
+                            Energy = 4238,
+                            GameVersionId = 2,
+                            MealName = "Blend of the Bayou",
+                            MealType = "Entrées",
+                            SellsFor = 2409
+                        },
+                        new
+                        {
+                            MealId = 28,
+                            Energy = 1227,
+                            GameVersionId = 1,
+                            MealName = "Blueberry Pie",
+                            MealType = "Desserts",
+                            SellsFor = 308
+                        },
+                        new
+                        {
+                            MealId = 29,
+                            Energy = 714,
+                            GameVersionId = 1,
+                            MealName = "Boba Tea",
+                            MealType = "Desserts",
+                            SellsFor = 323
+                        },
+                        new
+                        {
+                            MealId = 30,
+                            Energy = 1192,
+                            GameVersionId = 2,
+                            MealName = "Bony Osso Buco",
+                            MealType = "Entrées",
+                            SellsFor = 272
+                        },
+                        new
+                        {
+                            MealId = 31,
+                            Energy = 2114,
+                            GameVersionId = 1,
+                            MealName = "Bouillabaisse",
+                            MealType = "Entrées",
+                            SellsFor = 529
+                        },
+                        new
+                        {
+                            MealId = 32,
+                            Energy = 2500,
+                            GameVersionId = 2,
+                            MealName = "Braised Abalone",
+                            MealType = "Entrées",
+                            SellsFor = 570
+                        },
+                        new
+                        {
+                            MealId = 33,
+                            Energy = 898,
+                            GameVersionId = 2,
+                            MealName = "Braised Bamboo Shoots",
+                            MealType = "Entrées",
+                            SellsFor = 461
+                        },
+                        new
+                        {
+                            MealId = 34,
+                            Energy = 2336,
+                            GameVersionId = 2,
+                            MealName = "Brandade de Morue",
+                            MealType = "Entrées",
+                            SellsFor = 757
+                        },
+                        new
+                        {
+                            MealId = 35,
+                            Energy = 910,
+                            GameVersionId = 2,
+                            MealName = "Bulgur Salad",
+                            MealType = "Appetizers",
+                            SellsFor = 396
+                        },
+                        new
+                        {
+                            MealId = 36,
+                            Energy = 1881,
+                            GameVersionId = 1,
+                            MealName = "Buñuelos",
+                            MealType = "Appetizers",
+                            SellsFor = 948
+                        },
+                        new
+                        {
+                            MealId = 37,
+                            Energy = 809,
+                            GameVersionId = 2,
+                            MealName = "Burrito",
+                            MealType = "Entrées",
+                            SellsFor = 473
+                        },
+                        new
+                        {
+                            MealId = 38,
+                            Energy = 2142,
+                            GameVersionId = 2,
+                            MealName = "Butter Chicken",
+                            MealType = "Entrées",
+                            SellsFor = 1200
+                        },
+                        new
+                        {
+                            MealId = 39,
+                            Energy = 123,
+                            GameVersionId = 1,
+                            MealName = "Candy",
+                            MealType = "Desserts",
+                            SellsFor = 22
+                        },
+                        new
+                        {
+                            MealId = 40,
+                            Energy = 1482,
+                            GameVersionId = 2,
+                            MealName = "Cannoli",
+                            MealType = "Desserts",
+                            SellsFor = 678
+                        },
+                        new
+                        {
+                            MealId = 41,
+                            Energy = 638,
+                            GameVersionId = 1,
+                            MealName = "Caramel Apples",
+                            MealType = "Desserts",
+                            SellsFor = 56
+                        },
+                        new
+                        {
+                            MealId = 42,
+                            Energy = 1724,
+                            GameVersionId = 2,
+                            MealName = "Caramel Macarons",
+                            MealType = "Desserts",
+                            SellsFor = 401
+                        },
+                        new
+                        {
+                            MealId = 43,
+                            Energy = 2310,
+                            GameVersionId = 1,
+                            MealName = "Carp Salad",
+                            MealType = "Entrées",
+                            SellsFor = 617
+                        },
+                        new
+                        {
+                            MealId = 44,
+                            Energy = 908,
+                            GameVersionId = 1,
+                            MealName = "Carrot Cake",
+                            MealType = "Desserts",
+                            SellsFor = 427
+                        },
+                        new
+                        {
+                            MealId = 45,
+                            Energy = 759,
+                            GameVersionId = 2,
+                            MealName = "Charlotte Cake",
+                            MealType = "Desserts",
+                            SellsFor = 69
+                        });
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.MealIngredient", b =>
+                {
+                    b.Property<int>("MealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MealId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("MealIngredients");
+                });
+
+            modelBuilder.Entity("IngredientMeal", b =>
+                {
+                    b.Property<int>("IngredientsIngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MealsMealId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientsIngredientId", "MealsMealId");
+
+                    b.HasIndex("MealsMealId");
+
+                    b.ToTable("IngredientMeal");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -2950,6 +3418,51 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("GameVersion");
                 });
 
+            modelBuilder.Entity("DDVTracker.Models.Meal", b =>
+                {
+                    b.HasOne("DDVTracker.Models.GameVersion", "GameVersion")
+                        .WithMany()
+                        .HasForeignKey("GameVersionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GameVersion");
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.MealIngredient", b =>
+                {
+                    b.HasOne("DDVTracker.Models.Ingredient", "Ingredient")
+                        .WithMany("MealIngredients")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDVTracker.Models.Meal", "Meal")
+                        .WithMany("MealIngredients")
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Meal");
+                });
+
+            modelBuilder.Entity("IngredientMeal", b =>
+                {
+                    b.HasOne("DDVTracker.Models.Ingredient", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientsIngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DDVTracker.Models.Meal", null)
+                        .WithMany()
+                        .HasForeignKey("MealsMealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -3015,9 +3528,19 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("Locations");
                 });
 
+            modelBuilder.Entity("DDVTracker.Models.Ingredient", b =>
+                {
+                    b.Navigation("MealIngredients");
+                });
+
             modelBuilder.Entity("DDVTracker.Models.Location", b =>
                 {
                     b.Navigation("FishLocations");
+                });
+
+            modelBuilder.Entity("DDVTracker.Models.Meal", b =>
+                {
+                    b.Navigation("MealIngredients");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,6 +20,10 @@ namespace DDVTracker.Data
         public DbSet<Fish> Fish { get; set; }
 
         public DbSet<FishLocation> FishLocations { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+
+        public DbSet<MealIngredient> MealIngredients { get; set; }
 
 
 
@@ -69,6 +73,12 @@ namespace DDVTracker.Data
 
             );
 
+
+            modelBuilder.Entity<Character>()
+                .HasOne(c => c.GameVersion)
+                .WithMany(gv => gv.Characters)
+                .HasForeignKey(c => c.GameVersionId);
+
             modelBuilder.Entity<Character>().HasData(
                 new Character { CharacterId = 1, GameVersionId = 1, CharacterName = "Anna", AcquiredBy = "Realm", AcquiredFrom = "Frozen Realm", Notes = "Unlock Realm" },
                 new Character { CharacterId = 2, GameVersionId = 1, CharacterName = "Ariel", AcquiredBy = "Quest", AcquiredFrom = "Goofy", Notes = "The Mysterious Wreck" },
@@ -110,6 +120,18 @@ namespace DDVTracker.Data
 
 
             );
+
+            modelBuilder.Entity<FishLocation>()
+                .HasOne(fl => fl.Fish)
+                .WithMany(f => f.FishLocations)
+                .HasForeignKey(fl => fl.FishId)
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
+
+            modelBuilder.Entity<FishLocation>()
+                .HasOne(fl => fl.Location)
+                .WithMany(l => l.FishLocations)
+                .HasForeignKey(fl => fl.LocationId)
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
 
             modelBuilder.Entity<Fish>().HasData(
                 new Fish { FishId = 1, GameVersionId = 1, FishName = "Anglerfish", RippleColor = "Orange", SellsFor = 1500, Energy = 2000, },
@@ -243,6 +265,31 @@ namespace DDVTracker.Data
                 new FishLocation { FishLocationId = 85, FishId = 26, LocationId = 7 }
             );
 
+            modelBuilder.Entity<Meal>()
+                .HasKey(m => m.MealId);
+
+            modelBuilder.Entity<Meal>()
+                .HasOne(m => m.GameVersion)
+                .WithMany()
+                .HasForeignKey(m => m.GameVersionId)
+                .OnDelete(DeleteBehavior.Restrict);  // Restrict to avoid cascade delete
+
+            modelBuilder.Entity<Ingredient>()
+                .HasKey(i => i.IngredientId);
+
+            modelBuilder.Entity<MealIngredient>()
+            .HasKey(mi => new { mi.MealId, mi.IngredientId });
+
+            modelBuilder.Entity<MealIngredient>()
+                .HasOne(mi => mi.Meal)
+                .WithMany(m => m.MealIngredients)
+                .HasForeignKey(mi => mi.MealId);
+
+            modelBuilder.Entity<MealIngredient>()
+                .HasOne(mi => mi.Ingredient)
+                .WithMany(i => i.MealIngredients)
+                .HasForeignKey(mi => mi.IngredientId);
+
             modelBuilder.Entity<Ingredient>().HasData(
                 new Ingredient { IngredientId = 1, IngredientName = "Apple", GameVersionId = 1, IngredientCategory = "Fruit", BuyPrice = 50, SellsFor = 25, Energy = 300, GrowTime = "20 m", Water = null, Yield = 3, LocationId = 1, Method = "Gardening" },
                 new Ingredient { IngredientId = 2, IngredientName = "Asparagus", GameVersionId = 1, IngredientCategory = "Vegetables", BuyPrice = 200, SellsFor = 133, Energy = 42, GrowTime = "2 h 15 m", Water = 2, Yield = 3, LocationId = 7, Method = "Gardening" },
@@ -321,20 +368,53 @@ namespace DDVTracker.Data
                 new Ingredient { IngredientId = 75, IngredientName = "Yam", GameVersionId = 2, IngredientCategory = "Vegetables", BuyPrice = null, SellsFor = 36, Energy = 83, GrowTime = "4 h", Water = null, Yield = 1, LocationId = 9, Method = "Gardening" }
             );
 
-            // Set up the foreign key relationship. One Theme to many characters
-            modelBuilder.Entity<Character>().HasOne(c => c.GameVersion).WithMany(gv => gv.Characters).HasForeignKey(c => c.GameVersionId);
-
-            modelBuilder.Entity<FishLocation>()
-                .HasOne(fl => fl.Fish)
-                .WithMany(f => f.FishLocations)
-                .HasForeignKey(fl => fl.FishId)
-                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
-
-            modelBuilder.Entity<FishLocation>()
-                .HasOne(fl => fl.Location)
-                .WithMany(l => l.FishLocations)
-                .HasForeignKey(fl => fl.LocationId)
-                .OnDelete(DeleteBehavior.Restrict); // Restrict delete;
+            modelBuilder.Entity<Meal>().HasData(
+            new Meal { MealId = 1, MealName = "My Hero Cookie", GameVersionId = 1, MealType = "Desserts", SellsFor = 294, Energy = 679 },
+            new Meal { MealId = 2, MealName = "Ajiaco", GameVersionId = 2, MealType = "Entrées", SellsFor = 898, Energy = 757 },
+            new Meal { MealId = 3, MealName = "Apple Pie", GameVersionId = 1, MealType = "Desserts", SellsFor = 303, Energy = 1137 },
+            new Meal { MealId = 4, MealName = "Apple Sauce", GameVersionId = 2, MealType = "Desserts", SellsFor = 71, Energy = 823 },
+            new Meal { MealId = 5, MealName = "Apple Sorbet", GameVersionId = 1, MealType = "Desserts", SellsFor = 271, Energy = 1077 },
+            new Meal { MealId = 6, MealName = "Apple-Cider-Glazed Salmon", GameVersionId = 1, MealType = "Entrées", SellsFor = 271, Energy = 1572 },
+            new Meal { MealId = 7, MealName = "Arendellian Pickled Herring", GameVersionId = 1, MealType = "Appetizers", SellsFor = 532, Energy = 2092 },
+            new Meal { MealId = 8, MealName = "Arepas Con Queso", GameVersionId = 2, MealType = "Appetizers", SellsFor = 309, Energy = 770 },
+            new Meal { MealId = 9, MealName = "Aurora's Cake", GameVersionId = 1, MealType = "Desserts", SellsFor = 767, Energy = 1572 },
+            new Meal { MealId = 10, MealName = "Baked Beans", GameVersionId = 2, MealType = "Entrées", SellsFor = 388, Energy = 544 },
+            new Meal { MealId = 11, MealName = "Baked Carp", GameVersionId = 1, MealType = "Entrées", SellsFor = 767, Energy = 1894 },
+            new Meal { MealId = 12, MealName = "Banana Ice Cream", GameVersionId = 1, MealType = "Desserts", SellsFor = 641, Energy = 1884 },
+            new Meal { MealId = 13, MealName = "Banana Pie", GameVersionId = 1, MealType = "Desserts", SellsFor = 308, Energy = 1227 },
+            new Meal { MealId = 14, MealName = "Banana Split", GameVersionId = 1, MealType = "Desserts", SellsFor = 714, Energy = 2074 },
+            new Meal { MealId = 15, MealName = "Baozi", GameVersionId = 2, MealType = "Appetizers", SellsFor = 503, Energy = 842 },
+            new Meal { MealId = 16, MealName = "Barbecued Brilliant Blue Starfish", GameVersionId = 2, MealType = "Appetizers", SellsFor = 1202, Energy = 3118 },
+            new Meal { MealId = 17, MealName = "Barbecued Pretty Pink Starfish", GameVersionId = 2, MealType = "Appetizers", SellsFor = 1202, Energy = 2812 },
+            new Meal { MealId = 18, MealName = "Basil Berry Salad", GameVersionId = 2, MealType = "Desserts", SellsFor = 142, Energy = 1355 },
+            new Meal { MealId = 19, MealName = "Basil Omelet", GameVersionId = 1, MealType = "Entrées", SellsFor = 1020, Energy = 2035 },
+            new Meal { MealId = 20, MealName = "Beignets", GameVersionId = 1, MealType = "Desserts", SellsFor = 524, Energy = 912 },
+            new Meal { MealId = 21, MealName = "Bell Pepper Puffs", GameVersionId = 1, MealType = "Appetizers", SellsFor = 606, Energy = 1272 },
+            new Meal { MealId = 22, MealName = "Berry Salad", GameVersionId = 1, MealType = "Desserts", SellsFor = 139, Energy = 2255 },
+            new Meal { MealId = 23, MealName = "Best Fish Forever", GameVersionId = 2, MealType = "Entrées", SellsFor = 1400, Energy = 4420 },
+            new Meal { MealId = 24, MealName = "Birthday Cake", GameVersionId = 1, MealType = "Desserts", SellsFor = 749, Energy = 2310 },
+            new Meal { MealId = 25, MealName = "Biryani", GameVersionId = 2, MealType = "Entrées", SellsFor = 1049, Energy = 1468 },
+            new Meal { MealId = 26, MealName = "Biscuits", GameVersionId = 1, MealType = "Desserts", SellsFor = 294, Energy = 679 },
+            new Meal { MealId = 27, MealName = "Blend of the Bayou", GameVersionId = 2, MealType = "Entrées", SellsFor = 2409, Energy = 4238 },
+            new Meal { MealId = 28, MealName = "Blueberry Pie", GameVersionId = 1, MealType = "Desserts", SellsFor = 308, Energy = 1227 },
+            new Meal { MealId = 29, MealName = "Boba Tea", GameVersionId = 1, MealType = "Desserts", SellsFor = 323, Energy = 714 },
+            new Meal { MealId = 30, MealName = "Bony Osso Buco", GameVersionId = 2, MealType = "Entrées", SellsFor = 272, Energy = 1192 },
+            new Meal { MealId = 31, MealName = "Bouillabaisse", GameVersionId = 1, MealType = "Entrées", SellsFor = 529, Energy = 2114 },
+            new Meal { MealId = 32, MealName = "Braised Abalone", GameVersionId = 2, MealType = "Entrées", SellsFor = 570, Energy = 2500 },
+            new Meal { MealId = 33, MealName = "Braised Bamboo Shoots", GameVersionId = 2, MealType = "Entrées", SellsFor = 461, Energy = 898 },
+            new Meal { MealId = 34, MealName = "Brandade de Morue", GameVersionId = 2, MealType = "Entrées", SellsFor = 757, Energy = 2336 },
+            new Meal { MealId = 35, MealName = "Bulgur Salad", GameVersionId = 2, MealType = "Appetizers", SellsFor = 396, Energy = 910 },
+            new Meal { MealId = 36, MealName = "Buñuelos", GameVersionId = 1, MealType = "Appetizers", SellsFor = 948, Energy = 1881 },
+            new Meal { MealId = 37, MealName = "Burrito", GameVersionId = 2, MealType = "Entrées", SellsFor = 473, Energy = 809 },
+            new Meal { MealId = 38, MealName = "Butter Chicken", GameVersionId = 2, MealType = "Entrées", SellsFor = 1200, Energy = 2142 },
+            new Meal { MealId = 39, MealName = "Candy", GameVersionId = 1, MealType = "Desserts", SellsFor = 22, Energy = 123 },
+            new Meal { MealId = 40, MealName = "Cannoli", GameVersionId = 2, MealType = "Desserts", SellsFor = 678, Energy = 1482 },
+            new Meal { MealId = 41, MealName = "Caramel Apples", GameVersionId = 1, MealType = "Desserts", SellsFor = 56, Energy = 638 },
+            new Meal { MealId = 42, MealName = "Caramel Macarons", GameVersionId = 2, MealType = "Desserts", SellsFor = 401, Energy = 1724 },
+            new Meal { MealId = 43, MealName = "Carp Salad", GameVersionId = 1, MealType = "Entrées", SellsFor = 617, Energy = 2310 },
+            new Meal { MealId = 44, MealName = "Carrot Cake", GameVersionId = 1, MealType = "Desserts", SellsFor = 427, Energy = 908 },
+            new Meal { MealId = 45, MealName = "Charlotte Cake", GameVersionId = 2, MealType = "Desserts", SellsFor = 69, Energy = 759 }
+            );
 
         }
 

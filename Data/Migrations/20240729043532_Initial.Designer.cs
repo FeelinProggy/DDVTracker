@@ -4,6 +4,7 @@ using DDVTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    partial class DreamlightDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240729043532_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -3120,21 +3123,6 @@ namespace DDVTracker.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DDVTracker.Models.MealIngredient", b =>
-                {
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MealId", "IngredientId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("MealIngredients");
-                });
-
             modelBuilder.Entity("IngredientMeal", b =>
                 {
                     b.Property<int>("IngredientsIngredientId")
@@ -3426,25 +3414,6 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("GameVersion");
                 });
 
-            modelBuilder.Entity("DDVTracker.Models.MealIngredient", b =>
-                {
-                    b.HasOne("DDVTracker.Models.Ingredient", "Ingredient")
-                        .WithMany("MealIngredients")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DDVTracker.Models.Meal", "Meal")
-                        .WithMany("MealIngredients")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Meal");
-                });
-
             modelBuilder.Entity("IngredientMeal", b =>
                 {
                     b.HasOne("DDVTracker.Models.Ingredient", null)
@@ -3525,19 +3494,9 @@ namespace DDVTracker.Data.Migrations
                     b.Navigation("Locations");
                 });
 
-            modelBuilder.Entity("DDVTracker.Models.Ingredient", b =>
-                {
-                    b.Navigation("MealIngredients");
-                });
-
             modelBuilder.Entity("DDVTracker.Models.Location", b =>
                 {
                     b.Navigation("FishLocations");
-                });
-
-            modelBuilder.Entity("DDVTracker.Models.Meal", b =>
-                {
-                    b.Navigation("MealIngredients");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DDVTracker.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class DbInitial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -227,7 +227,7 @@ namespace DDVTracker.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ingredient",
+                name: "Ingredients",
                 columns: table => new
                 {
                     IngredientId = table.Column<int>(type: "int", nullable: false)
@@ -247,9 +247,9 @@ namespace DDVTracker.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredient", x => x.IngredientId);
+                    table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
                     table.ForeignKey(
-                        name: "FK_Ingredient_GameVersion_GameVersionId",
+                        name: "FK_Ingredients_GameVersion_GameVersionId",
                         column: x => x.GameVersionId,
                         principalTable: "GameVersion",
                         principalColumn: "GameVersionId",
@@ -278,6 +278,29 @@ namespace DDVTracker.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Meals",
+                columns: table => new
+                {
+                    MealId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameVersionId = table.Column<int>(type: "int", nullable: false),
+                    MealName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MealType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SellsFor = table.Column<int>(type: "int", nullable: true),
+                    Energy = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Meals", x => x.MealId);
+                    table.ForeignKey(
+                        name: "FK_Meals_GameVersion_GameVersionId",
+                        column: x => x.GameVersionId,
+                        principalTable: "GameVersion",
+                        principalColumn: "GameVersionId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FishLocations",
                 columns: table => new
                 {
@@ -301,6 +324,30 @@ namespace DDVTracker.Data.Migrations
                         principalTable: "Locations",
                         principalColumn: "LocationId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IngredientMeal",
+                columns: table => new
+                {
+                    IngredientsIngredientId = table.Column<int>(type: "int", nullable: false),
+                    MealsMealId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IngredientMeal", x => new { x.IngredientsIngredientId, x.MealsMealId });
+                    table.ForeignKey(
+                        name: "FK_IngredientMeal_Ingredients_IngredientsIngredientId",
+                        column: x => x.IngredientsIngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "IngredientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_IngredientMeal_Meals_MealsMealId",
+                        column: x => x.MealsMealId,
+                        principalTable: "Meals",
+                        principalColumn: "MealId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -405,7 +452,7 @@ namespace DDVTracker.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Ingredient",
+                table: "Ingredients",
                 columns: new[] { "IngredientId", "BuyPrice", "Energy", "GameVersionId", "GrowTime", "IngredientCategory", "IngredientName", "LocationId", "Method", "Notes", "SellsFor", "Water", "Yield" },
                 values: new object[,]
                 {
@@ -523,6 +570,58 @@ namespace DDVTracker.Data.Migrations
                     { 30, "7000 Dreamlight", 1, "Toy Story Realm" },
                     { 31, "3000 Dreamlight", 1, "WALL-E Realm" },
                     { 32, null, 1, "Chez Remy" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Meals",
+                columns: new[] { "MealId", "Energy", "GameVersionId", "MealName", "MealType", "SellsFor" },
+                values: new object[,]
+                {
+                    { 1, 679, 1, "My Hero Cookie", "Desserts", 294 },
+                    { 2, 757, 2, "Ajiaco", "Entrées", 898 },
+                    { 3, 1137, 1, "Apple Pie", "Desserts", 303 },
+                    { 4, 823, 2, "Apple Sauce", "Desserts", 71 },
+                    { 5, 1077, 1, "Apple Sorbet", "Desserts", 271 },
+                    { 6, 1572, 1, "Apple-Cider-Glazed Salmon", "Entrées", 271 },
+                    { 7, 2092, 1, "Arendellian Pickled Herring", "Appetizers", 532 },
+                    { 8, 770, 2, "Arepas Con Queso", "Appetizers", 309 },
+                    { 9, 1572, 1, "Aurora's Cake", "Desserts", 767 },
+                    { 10, 544, 2, "Baked Beans", "Entrées", 388 },
+                    { 11, 1894, 1, "Baked Carp", "Entrées", 767 },
+                    { 12, 1884, 1, "Banana Ice Cream", "Desserts", 641 },
+                    { 13, 1227, 1, "Banana Pie", "Desserts", 308 },
+                    { 14, 2074, 1, "Banana Split", "Desserts", 714 },
+                    { 15, 842, 2, "Baozi", "Appetizers", 503 },
+                    { 16, 3118, 2, "Barbecued Brilliant Blue Starfish", "Appetizers", 1202 },
+                    { 17, 2812, 2, "Barbecued Pretty Pink Starfish", "Appetizers", 1202 },
+                    { 18, 1355, 2, "Basil Berry Salad", "Desserts", 142 },
+                    { 19, 2035, 1, "Basil Omelet", "Entrées", 1020 },
+                    { 20, 912, 1, "Beignets", "Desserts", 524 },
+                    { 21, 1272, 1, "Bell Pepper Puffs", "Appetizers", 606 },
+                    { 22, 2255, 1, "Berry Salad", "Desserts", 139 },
+                    { 23, 4420, 2, "Best Fish Forever", "Entrées", 1400 },
+                    { 24, 2310, 1, "Birthday Cake", "Desserts", 749 },
+                    { 25, 1468, 2, "Biryani", "Entrées", 1049 },
+                    { 26, 679, 1, "Biscuits", "Desserts", 294 },
+                    { 27, 4238, 2, "Blend of the Bayou", "Entrées", 2409 },
+                    { 28, 1227, 1, "Blueberry Pie", "Desserts", 308 },
+                    { 29, 714, 1, "Boba Tea", "Desserts", 323 },
+                    { 30, 1192, 2, "Bony Osso Buco", "Entrées", 272 },
+                    { 31, 2114, 1, "Bouillabaisse", "Entrées", 529 },
+                    { 32, 2500, 2, "Braised Abalone", "Entrées", 570 },
+                    { 33, 898, 2, "Braised Bamboo Shoots", "Entrées", 461 },
+                    { 34, 2336, 2, "Brandade de Morue", "Entrées", 757 },
+                    { 35, 910, 2, "Bulgur Salad", "Appetizers", 396 },
+                    { 36, 1881, 1, "Buñuelos", "Appetizers", 948 },
+                    { 37, 809, 2, "Burrito", "Entrées", 473 },
+                    { 38, 2142, 2, "Butter Chicken", "Entrées", 1200 },
+                    { 39, 123, 1, "Candy", "Desserts", 22 },
+                    { 40, 1482, 2, "Cannoli", "Desserts", 678 },
+                    { 41, 638, 1, "Caramel Apples", "Desserts", 56 },
+                    { 42, 1724, 2, "Caramel Macarons", "Desserts", 401 },
+                    { 43, 2310, 1, "Carp Salad", "Entrées", 617 },
+                    { 44, 908, 1, "Carrot Cake", "Desserts", 427 },
+                    { 45, 759, 2, "Charlotte Cake", "Desserts", 69 }
                 });
 
             migrationBuilder.InsertData(
@@ -677,13 +776,23 @@ namespace DDVTracker.Data.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredient_GameVersionId",
-                table: "Ingredient",
+                name: "IX_IngredientMeal_MealsMealId",
+                table: "IngredientMeal",
+                column: "MealsMealId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_GameVersionId",
+                table: "Ingredients",
                 column: "GameVersionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_GameVersionId",
                 table: "Locations",
+                column: "GameVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Meals_GameVersionId",
+                table: "Meals",
                 column: "GameVersionId");
         }
 
@@ -712,7 +821,7 @@ namespace DDVTracker.Data.Migrations
                 name: "FishLocations");
 
             migrationBuilder.DropTable(
-                name: "Ingredient");
+                name: "IngredientMeal");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -725,6 +834,12 @@ namespace DDVTracker.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
+                name: "Meals");
 
             migrationBuilder.DropTable(
                 name: "GameVersion");

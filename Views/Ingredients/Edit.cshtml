@@ -1,0 +1,89 @@
+﻿@model DDVTracker.Models.Ingredient
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Ingredient</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IngredientId" />
+            <div class="form-group">
+                <label asp-for="GameVersionId" class="control-label"></label>
+                <select asp-for="GameVersionId" class="form-control" asp-items="ViewBag.GameVersionId"></select>
+                <span asp-validation-for="GameVersionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IngredientName" class="control-label"></label>
+                <input asp-for="IngredientName" class="form-control" />
+                <span asp-validation-for="IngredientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IngredientCategory" class="control-label"></label>
+                <input asp-for="IngredientCategory" class="form-control" />
+                <span asp-validation-for="IngredientCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BuyPrice" class="control-label"></label>
+                <input asp-for="BuyPrice" class="form-control" />
+                <span asp-validation-for="BuyPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SellsFor" class="control-label"></label>
+                <input asp-for="SellsFor" class="form-control" />
+                <span asp-validation-for="SellsFor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Energy" class="control-label"></label>
+                <input asp-for="Energy" class="form-control" />
+                <span asp-validation-for="Energy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GrowTime" class="control-label"></label>
+                <input asp-for="GrowTime" class="form-control" />
+                <span asp-validation-for="GrowTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Water" class="control-label"></label>
+                <input asp-for="Water" class="form-control" />
+                <span asp-validation-for="Water" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Yield" class="control-label"></label>
+                <input asp-for="Yield" class="form-control" />
+                <span asp-validation-for="Yield" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <input asp-for="LocationId" class="form-control" />
+                <span asp-validation-for="LocationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Method" class="control-label"></label>
+                <input asp-for="Method" class="form-control" />
+                <span asp-validation-for="Method" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notes" class="control-label"></label>
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
