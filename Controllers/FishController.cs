@@ -97,11 +97,6 @@ namespace DDVTracker.Controllers
 
             var fish = await _context.Fish.FindAsync(id);
 
-            if (fish == null)
-            {
-                return NotFound();
-            }
-
             var allLocations = _context.Locations.ToList();
             var fishLocations = _context.FishLocations.Where(fl => fl.FishId == fish.FishId).Select(fl => fl.LocationId).ToList();
 
@@ -194,19 +189,15 @@ namespace DDVTracker.Controllers
                 .Include(f => f.GameVersion)
                 .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
-            if (fish == null)
-            {
-                return NotFound();
-            }
 
-            return View(fish);
+            return PartialView("_FishDelete", fish);
         }
 
         // POST: Fish/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RequireModeratorRole")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var fish = await _context.Fish.Include(f => f.FishLocations).FirstOrDefaultAsync(f => f.FishId == id);
             if (fish != null)
@@ -220,32 +211,25 @@ namespace DDVTracker.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Fish/Details/5
+
+        // GET: Fish/Details
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var fish = await _context.Fish
                 .Include(f => f.GameVersion)
-                .Include(f => f.FishLocations).ThenInclude(fl => fl.Location)
+                .Include(f => f.FishLocations)
+                .ThenInclude(fl => fl.Location)
                 .FirstOrDefaultAsync(m => m.FishId == id);
+
             if (fish == null)
             {
                 return NotFound();
             }
 
-            return View(fish);
-        }
-        private bool FishExists(int id)
-        {
-            return _context.Fish.Any(e => e.FishId == id);
+            return PartialView("_FishDetails", fish);
         }
     }
 }
