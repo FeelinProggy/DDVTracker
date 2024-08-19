@@ -94,4 +94,21 @@
             @Html.DisplayFor(model => model.Notes)
         </dd>
     </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Used in: 
+        </dt>
+        <dd class="col-sm-9">
+            <ul>
+                @foreach (var mealIngredient in Model.MealIngredients)
+                {
+                    <li>
+                        <a asp-action="Details" asp-controller="Meals" asp-route-id="@mealIngredient.MealId">
+                            @mealIngredient.Meal.MealName
+                        </a>
+                    </li>
+                }
+            </ul>
+        </dd>
+    </dl>
 </div>
