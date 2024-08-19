@@ -1,0 +1,97 @@
+﻿@model DDVTracker.Models.Ingredient
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-10">
+            @Html.DisplayFor(model => model.IngredientName)
+        </dt>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Game Version:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.GameVersion.GameVersionName)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Category:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IngredientCategory)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Buy for:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.BuyPrice)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Sells for:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.SellsFor)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Energy
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Energy)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Grow Time
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.GrowTime)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Water)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Water)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Yield)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Yield)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Can be found in:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LocationId)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Acquired by:
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Method)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+    </dl>
+</div>
