@@ -1,14 +1,22 @@
 ﻿@model IEnumerable<DDVTracker.Models.Meal>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Meals";
 }
 
-<h1>Index</h1>
-
+<h1>Meals</h1>
+@{
+    // Only show the create button if the user is signed in and is not a regular user
+    if (SignInManager.IsSignedIn(User) && !User.IsInRole(IdentityHelper.User))
+    {
 <p>
-    <a asp-action="Create">Create New</a>
+            <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
+    }
+}
 <table id="modelDisplay" class="table">
     <thead>
         <tr>
@@ -55,9 +63,15 @@
                 @Html.DisplayFor(modelItem => item.Energy)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MealId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MealId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MealId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.MealId">Details</a> 
+                    @{
+                        // Only show the edit and delete buttons if the user is signed in and is not a regular user
+                        if (SignInManager.IsSignedIn(User) && !User.IsInRole(IdentityHelper.User))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.MealId">| Edit</a>
+                            <a asp-action = "Delete" asp - route - id = "@item.MealId">| Delete </a>
+                        }
+                    }
             </td>
         </tr>
 }
