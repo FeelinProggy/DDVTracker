@@ -34,15 +34,18 @@ namespace DDVTracker.Controllers
                 return NotFound();
             }
 
-            var ingredient = await _context.Ingredients
+            var ingredient = _context.Ingredients
                 .Include(i => i.GameVersion)
-                .FirstOrDefaultAsync(m => m.IngredientId == id);
+                .Include(i => i.MealIngredients)
+                    .ThenInclude(mi => mi.Meal)
+                .FirstOrDefault(i => i.IngredientId == id);
+
             if (ingredient == null)
             {
                 return NotFound();
             }
 
-            return View(ingredient);
+            return PartialView("_IngredientDetails", ingredient);
         }
 
         // GET: Ingredients/Create
