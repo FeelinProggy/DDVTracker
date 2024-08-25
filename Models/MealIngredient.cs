@@ -1,4 +1,8 @@
-﻿namespace DDVTracker.Models
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DDVTracker.Models
 {
     public class MealIngredient
     {

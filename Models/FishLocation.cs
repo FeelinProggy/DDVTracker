@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+#nullable enable
 namespace DDVTracker.Models
 {
     public class FishLocation

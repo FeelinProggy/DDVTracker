@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace DDVTracker.Models
 {
     public class Fish
@@ -17,7 +16,9 @@ namespace DDVTracker.Models
         public int GameVersionId { get; set; }
         public GameVersion? GameVersion { get; set; }
 
+        [Required]
         public string FishName { get; set; }
+
 
         /// <summary>
         /// to save the character's image
@@ -65,5 +66,11 @@ namespace DDVTracker.Models
         /// </summary>
         [NotMapped]
         public List<int>? SelectedLocationIds { get; set; }
+
+        /// <summary>
+        /// Used for uniqide identification of the object in ModelobjectLocations
+        /// </summary>
+        [NotMapped]
+        public string ObjectType { get; set; } = "Fish";
     }
 }

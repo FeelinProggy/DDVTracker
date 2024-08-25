@@ -18,11 +18,11 @@ namespace DDVTracker.Models
         /// <summary>
         /// Navigation property for the GameVersion
         /// </summary>
-        public GameVersion? GameVersion { get; set; }
+        public GameVersion GameVersion { get; set; }
 
         public string LocationName { get; set; }
 
-        public string? Cost { get; set; }
+        public string Cost { get; set; }
 
         // Navigation property for the FishLocation
         public ICollection<FishLocation> FishLocations { get; set; }

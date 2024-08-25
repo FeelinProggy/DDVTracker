@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+#nullable enable
 namespace DDVTracker.Models
-
 {
     public class GameVersion
     {
@@ -13,8 +13,8 @@ namespace DDVTracker.Models
         /// <summary>
         /// Navigation property for Characters.
         /// </summary>
-        public ICollection<Character>? Characters { get; set; }
-        public ICollection<Fish>? Fish { get; set; }
-        public ICollection<Location>? Locations { get; set; }
+        public ICollection<Character> Characters { get; set; }
+        public ICollection<Fish> Fish { get; set; }
+        public ICollection<Location> Locations { get; set; }
     }
 }
