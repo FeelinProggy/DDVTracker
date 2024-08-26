@@ -3,9 +3,20 @@ using DDVTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
+using Microsoft.Extensions.Azure;
+using Azure.Storage.Blobs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+//// Start Azurite only in non-production environments
+//AzuriteController azuriteController = null;
+//if (!builder.Environment.IsProduction())
+//{
+//    azuriteController = new AzuriteController();
+//    azuriteController.Start();
+//}
+//
 // Load configuration based on environment
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -81,6 +92,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
+// Configure BlobServiceClient
+string blobStorageConnectionString = builder.Configuration.GetConnectionString("BlobStorageConnectionString")
+    ?? throw new InvalidOperationException("Azure Storage connection string 'BlobStorageConnectionString' not found in configuration.");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
@@ -118,3 +133,9 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceProvider>().Cr
 Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 // Run the application
 app.Run();
+
+//// Stop Azurite when the application stops
+//if (azuriteController != null)
+//{
+//    azuriteController.Stop();
+//}
