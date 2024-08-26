@@ -2,18 +2,42 @@ using DDVTracker.Data;
 using DDVTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Load configuration based on environment
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
-// Get the connection string from configuration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+string connectionString;
 
-// Configure Entity Framework to use SQL Server with the connection string
-builder.Services.AddDbContext<DreamlightDbContext>(options =>
-    options.UseSqlServer(connectionString));
+if (builder.Environment.IsProduction())
+{
+    // Retrieve the VaultUri from environment variables
+    var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+    builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
+    // Retrieve the connection string from Key Vault
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found in Key Vault.");
+
+    // Configure Entity Framework to use SQL Server with the connection string
+    builder.Services.AddDbContext<DreamlightDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
+else
+{
+    // Get the connection string from configuration for non-production environments
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+    // Configure Entity Framework to use SQL Server with the connection string
+    builder.Services.AddDbContext<DreamlightDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
 
 // Add a filter to show detailed database errors in development
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -91,6 +115,6 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceProvider>().Cr
     // Create default user
     await IdentityHelper.CreateDefaultUser(serviceScope.ServiceProvider, IdentityHelper.Master);
 }
-
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 // Run the application
 app.Run();
