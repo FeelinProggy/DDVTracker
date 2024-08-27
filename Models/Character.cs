@@ -33,13 +33,10 @@ namespace DDVTracker.Models
 
         public string? Notes { get; set; }
 
-
         /// <summary>
         /// to save the character's image
         /// </summary>
-        [DisplayName("Image")]
-        public byte[]? CharacterImage { get; set; }
-        
+        public string? CharacterImagePath { get; set; }
 
         /// <summary>
         /// For user to note whether they have unlocked the character
