@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Azure.Storage.Blobs;
+using Azure.Security.KeyVault.Secrets;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 string connectionString;
+string blobStorageConnectionString;
 
 if (builder.Environment.IsProduction())
 {
@@ -38,6 +40,14 @@ if (builder.Environment.IsProduction())
     // Configure Entity Framework to use SQL Server with the connection string
     builder.Services.AddDbContext<DreamlightDbContext>(options =>
         options.UseSqlServer(connectionString));
+
+    // Retrieve the Blob Storage connection string from Key Vault
+    var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential());
+    KeyVaultSecret secret = secretClient.GetSecret("BlobStorageConnectionString");
+    blobStorageConnectionString = secret.Value;
+
+    // Add the Blob Storage connection string to the configuration
+    builder.Configuration["AzureBlobStorage:ConnectionString"] = blobStorageConnectionString;
 }
 else
 {
@@ -48,6 +58,12 @@ else
     // Configure Entity Framework to use SQL Server with the connection string
     builder.Services.AddDbContext<DreamlightDbContext>(options =>
         options.UseSqlServer(connectionString));
+
+    // Get the Blob Storage connection string from configuration
+    blobStorageConnectionString = builder.Configuration.GetConnectionString("BlobStorageConnectionString")
+        ?? throw new InvalidOperationException("Azure Storage connection string 'BlobStorageConnectionString' not found in configuration.");
+
+    // Add the Blob Storage connection string to the configuration
 }
 
 // Add a filter to show detailed database errors in development
@@ -91,10 +107,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
     options.User.RequireUniqueEmail = true;
 });
-
-// Configure BlobServiceClient
-string blobStorageConnectionString = builder.Configuration.GetConnectionString("BlobStorageConnectionString")
-    ?? throw new InvalidOperationException("Azure Storage connection string 'BlobStorageConnectionString' not found in configuration.");
 
 var app = builder.Build();
 
