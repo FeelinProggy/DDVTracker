@@ -5,12 +5,19 @@ using Microsoft.EntityFrameworkCore;
 using DDVTracker;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
-
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new VisualStudioCredential());
+// Configure Key Vault
+var keyVaultUri = Environment.GetEnvironmentVariable("VaultUri");
+if (string.IsNullOrEmpty(keyVaultUri))
+{
+    throw new ArgumentNullException("VaultUri", "The Azure Key Vault URI is not set in the environment variables.");
+}
+
+var keyVaultEndpoint = new Uri(keyVaultUri);
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 // Load configuration based on environment
 builder.Configuration
@@ -77,7 +84,6 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddAzureClients(clientBuilder =>
 {
     clientBuilder.AddBlobServiceClient(builder.Configuration["azureblob:blob"]!, preferMsi: true);
-    clientBuilder.AddQueueServiceClient(builder.Configuration["azureblob:queue"]!, preferMsi: true);
 });
 
 var app = builder.Build();

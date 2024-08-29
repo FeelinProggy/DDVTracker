@@ -1,18 +1,16 @@
 {
   "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    },
     "secrets1": {
       "type": "secrets",
       "connectionId": "VaultUri"
     },
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection",
-      "dynamicId": null
-    },
     "storage1": {
       "type": "storage",
-      "connectionId": "azureblob",
-      "dynamicId": null
+      "connectionId": "azureblob"
     }
   }
 }
