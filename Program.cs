@@ -2,72 +2,34 @@ using DDVTracker.Data;
 using DDVTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Azure.Identity;
-using Microsoft.Extensions.Azure;
-using Azure.Storage.Blobs;
-using Azure.Security.KeyVault.Secrets;
+using DDVTracker;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-//// Start Azurite only in non-production environments
-//AzuriteController azuriteController = null;
-//if (!builder.Environment.IsProduction())
-//{
-//    azuriteController = new AzuriteController();
-//    azuriteController.Start();
-//}
-//
 // Load configuration based on environment
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-string connectionString;
-string blobStorageConnectionString;
-
 if (builder.Environment.IsProduction())
 {
-    // Retrieve the VaultUri from environment variables
-    var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-    builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-
-    // Retrieve the connection string from Key Vault
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found in Key Vault.");
-
-    // Configure Entity Framework to use SQL Server with the connection string
-    builder.Services.AddDbContext<DreamlightDbContext>(options =>
-        options.UseSqlServer(connectionString));
-
-    // Retrieve the Blob Storage connection string from Key Vault
-    var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential());
-    KeyVaultSecret secret = secretClient.GetSecret("BlobStorageConnectionString");
-    blobStorageConnectionString = secret.Value;
-
-    // Add the Blob Storage connection string to the configuration
-    builder.Configuration["AzureBlobStorage:ConnectionString"] = blobStorageConnectionString;
+    // Register Azure Blob Storage service for production
+    builder.Services.AddSingleton<IFileStorageService, AzureBlobStorageService>();
 }
 else
 {
-    // Get the connection string from configuration for non-production environments
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-    // Configure Entity Framework to use SQL Server with the connection string
-    builder.Services.AddDbContext<DreamlightDbContext>(options =>
-        options.UseSqlServer(connectionString));
-
-    // Get the Blob Storage connection string from configuration
-    blobStorageConnectionString = builder.Configuration.GetConnectionString("BlobStorageConnectionString")
-        ?? throw new InvalidOperationException("Azure Storage connection string 'BlobStorageConnectionString' not found in configuration.");
-
-    // Add the Blob Storage connection string to the configuration
+    // Register local file storage service for development
+    builder.Services.AddSingleton<IFileStorageService, LocalFileStorageService>();
 }
 
 // Add a filter to show detailed database errors in development
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Register the DreamlightDbContext for both environments
+builder.Services.AddDbContext<DreamlightDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure Identity services with default settings
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -145,9 +107,3 @@ using (var serviceScope = app.Services.GetRequiredService<IServiceProvider>().Cr
 Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
 // Run the application
 app.Run();
-
-//// Stop Azurite when the application stops
-//if (azuriteController != null)
-//{
-//    azuriteController.Stop();
-//}

@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DDVTracker.Data;
 using DDVTracker.Models;
 using Microsoft.AspNetCore.Authorization;
+using Azure.Storage.Blobs;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace DDVTracker.Controllers
 {
     public class CharactersController : Controller
     {
         private readonly DreamlightDbContext _context;
+        private readonly IFileStorageService _fileStorageService;
 
-        public CharactersController(DreamlightDbContext context)
+        public CharactersController(DreamlightDbContext context, IFileStorageService fileStorageService)
         {
             _context = context;
+            _fileStorageService = fileStorageService;
         }
 
         // GET: Characters
@@ -35,29 +36,27 @@ namespace DDVTracker.Controllers
             return View();
         }
 
-        // POST: Fish/Create
+        // POST: Characters/Create
         /// <summary>
         /// For admins to create new character objects to display. 
         /// </summary>
         /// <param name="character"></param>
-        /// <param name="CharacterImage">Will check if an image has been selected and then convert it
+        /// <param name="CharacterImageUpload">Will check if an image has been selected and then convert it
         /// to be stored in the database as varbinary</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "RequireModeratorRole")]
         public async Task<IActionResult> Create([Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
-        "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
+        "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImageUpload)
         {
             if (ModelState.IsValid)
             {
-                if (CharacterImage != null) { 
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            await CharacterImage.CopyToAsync(memoryStream);
-                            character.CharacterImage = memoryStream.ToArray();
-                        }
+                if (CharacterImageUpload != null)
+                {
+                    var fileName = $"{character.CharacterName}.webp";
+                    character.CharacterImageUpload = await _fileStorageService.SaveFileAsync(CharacterImageUpload, "characters", fileName);
                 }
-                    _context.Add(character);
+                _context.Add(character);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -84,38 +83,33 @@ namespace DDVTracker.Controllers
         }
 
         // POST: Characters/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CharacterId,GameVersionId,CharacterName,isUnlocked,CharacterLevel," +
-            "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImage)
+            "AssignedSkill,FavoriteThing1,FavoriteThing2,FavoriteThing3")] Character character, IFormFile? CharacterImageUpload)
         {
             if (id != character.CharacterId)
             {
                 return NotFound();
             }
-            
+
             if (ModelState.IsValid)
             {
                 var existingCharacter = await _context.Characters.AsNoTracking().FirstOrDefaultAsync(c => c.CharacterId == id);
-                if (CharacterImage != null && CharacterImage.Length > 0)
+                if (CharacterImageUpload != null && CharacterImageUpload.Length > 0)
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await CharacterImage.CopyToAsync(memoryStream);
-                        character.CharacterImage = memoryStream.ToArray();
-                    }
+                    var fileName = $"{character.CharacterName}.webp";
+                    character.CharacterImageUpload = await _fileStorageService.SaveFileAsync(CharacterImageUpload, "characters", fileName);
                 }
                 else
                 {
-                    character.CharacterImage = existingCharacter.CharacterImage;
+                    character.CharacterImageUpload = existingCharacter.CharacterImageUpload;
                 }
-            
-                    _context.Update(character);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+
+                _context.Update(character);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["GameVersionId"] = new SelectList(_context.GameVersion, "GameVersionId", "GameVersionName", character.GameVersionId);
             return View(character);
