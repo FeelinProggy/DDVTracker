@@ -36,7 +36,7 @@ namespace DDVTracker.Models
         /// <summary>
         /// to save the character's image
         /// </summary>
-        public string? CharacterImagePath { get; set; }
+        public string? CharacterImageUpload { get; set; }
 
         /// <summary>
         /// For user to note whether they have unlocked the character
@@ -61,18 +61,6 @@ namespace DDVTracker.Models
         public string? FavoriteThing1 { get; set; }
         public string? FavoriteThing2 { get; set; }
         public string? FavoriteThing3 { get; set; }
-
-        /// <summary>
-        /// Used to convert bit back into and image to be displayed
-        /// </summary>
-        [NotMapped] // This attribute means the property will not be mapped to a database column
-        public string? ImageBase64
-        {
-            get
-            {
-                return CharacterImage != null ? Convert.ToBase64String(CharacterImage) : null;
-            }
-        }
 
     }
 }

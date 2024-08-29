@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDVTracker.Data.Migrations
 {
     [DbContext(typeof(DreamlightDbContext))]
-    [Migration("20240807154233_MealIngrdiets")]
-    partial class MealIngrdiets
+    [Migration("20240828210643_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -42,8 +42,8 @@ namespace DDVTracker.Data.Migrations
                     b.Property<string>("AssignedSkill")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("CharacterImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("CharacterImageUpload")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CharacterLevel")
                         .HasColumnType("int");

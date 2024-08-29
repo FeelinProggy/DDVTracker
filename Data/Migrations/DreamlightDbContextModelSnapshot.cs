@@ -17,7 +17,7 @@ namespace DDVTracker.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -39,8 +39,8 @@ namespace DDVTracker.Data.Migrations
                     b.Property<string>("AssignedSkill")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("CharacterImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("CharacterImageUpload")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CharacterLevel")
                         .HasColumnType("int");

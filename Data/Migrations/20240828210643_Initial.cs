@@ -182,7 +182,7 @@ namespace DDVTracker.Data.Migrations
                     AcquiredBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AcquiredFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CharacterImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CharacterImageUpload = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     isUnlocked = table.Column<bool>(type: "bit", nullable: true),
                     CharacterLevel = table.Column<int>(type: "int", nullable: true),
                     AssignedSkill = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -350,6 +350,30 @@ namespace DDVTracker.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "MealIngredients",
+                columns: table => new
+                {
+                    MealId = table.Column<int>(type: "int", nullable: false),
+                    IngredientId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealIngredients", x => new { x.MealId, x.IngredientId });
+                    table.ForeignKey(
+                        name: "FK_MealIngredients_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "IngredientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MealIngredients_Meals_MealId",
+                        column: x => x.MealId,
+                        principalTable: "Meals",
+                        principalColumn: "MealId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "GameVersion",
                 columns: new[] { "GameVersionId", "GameVersionName" },
@@ -361,7 +385,7 @@ namespace DDVTracker.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Characters",
-                columns: new[] { "CharacterId", "AcquiredBy", "AcquiredFrom", "AssignedSkill", "CharacterImage", "CharacterLevel", "CharacterName", "FavoriteThing1", "FavoriteThing2", "FavoriteThing3", "GameVersionId", "Notes", "isUnlocked" },
+                columns: new[] { "CharacterId", "AcquiredBy", "AcquiredFrom", "AssignedSkill", "CharacterImageUpload", "CharacterLevel", "CharacterName", "FavoriteThing1", "FavoriteThing2", "FavoriteThing3", "GameVersionId", "Notes", "isUnlocked" },
                 values: new object[,]
                 {
                     { 1, "Realm", "Frozen Realm", null, null, null, "Anna", null, null, null, 1, "Unlock Realm", null },
@@ -791,6 +815,11 @@ namespace DDVTracker.Data.Migrations
                 column: "GameVersionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MealIngredients_IngredientId",
+                table: "MealIngredients",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Meals_GameVersionId",
                 table: "Meals",
                 column: "GameVersionId");
@@ -822,6 +851,9 @@ namespace DDVTracker.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "IngredientMeal");
+
+            migrationBuilder.DropTable(
+                name: "MealIngredients");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
