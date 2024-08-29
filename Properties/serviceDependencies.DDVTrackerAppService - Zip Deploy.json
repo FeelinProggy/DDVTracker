@@ -7,6 +7,22 @@
       "type": "secrets.keyVault",
       "connectionId": "VaultUri",
       "dynamicId": null
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/DDVTrackerAppService/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsDefaultConnection_DF7194F999",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/ddvtrackerdbserver/databases/DDVTracker_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "dynamicId": null
+    },
+    "storage1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/DDVTrackerAppService/providers/Microsoft.ServiceLinker/linkers/azureblob_84AF6B2A7C, /subscriptions/854e3b66-3db7-442a-b8d2-5eb02bd869da/resourceGroups/DDVTrackerResourceGroup/providers/Microsoft.Web/sites/DDVTrackerAppService/providers/Microsoft.ServiceLinker/linkers/azureblob_F34BEE3F57",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/ddvtrackerblob",
+      "type": "storage.azure",
+      "connectionId": "azureblob",
+      "dynamicId": null
     }
   }
 }

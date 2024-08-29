@@ -3,9 +3,14 @@ using DDVTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DDVTracker;
+using Azure.Identity;
+using Microsoft.Extensions.Azure;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new VisualStudioCredential());
 
 // Load configuration based on environment
 builder.Configuration
@@ -68,6 +73,11 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
     options.User.RequireUniqueEmail = true;
+});
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["azureblob:blob"]!, preferMsi: true);
+    clientBuilder.AddQueueServiceClient(builder.Configuration["azureblob:queue"]!, preferMsi: true);
 });
 
 var app = builder.Build();

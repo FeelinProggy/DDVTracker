@@ -24,6 +24,7 @@
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.6.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.21.2" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.19.1" />
+    <PackageReference Include="Azure.Storage.Queues" Version="12.11.1" />
     <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="datatables.net" Version="2.1.4" />
     <PackageReference Include="jQuery" Version="3.7.1" />
