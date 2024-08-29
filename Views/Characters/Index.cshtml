@@ -22,12 +22,12 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
-                        @if (!string.IsNullOrEmpty(item.ImageBase64))
+                        @if (!string.IsNullOrEmpty(item.CharacterImageUpload))
                         {
-                            <img src="data:image/jpeg;base64,@item.ImageBase64" alt="Character Image" class="img-fluid" />
+                            <img src="@item.CharacterImageUpload" alt="Character Image" width="100" />
                         }
                         else
                         {
